@@ -11,6 +11,7 @@
             <!-- ######################################### Header ######################################### -->
             
             <field name="state" position="replace">
+                <field name="amount_residual"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
             </field>
             <field name="state" position="before">
