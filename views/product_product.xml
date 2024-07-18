@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_product_form_inherit_preorder" model="ir.ui.view">
+        <field name="name">product.form.inherit.preorder</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="is_preorder"/>
+                    <label for="is_preorder"/>
+                </span>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="Preorder">
+                    <group string="Preorder">
+                        <group >
+                            <field name="preorder_deadline" string="Dead Line preorder allowed"/>
+                            <field name="preorder_payment_option" string="option payment for delivered preorder"/>
+                        </group>                       
+                        <group>
+                            <field name="preorder_quantity" string="Quantity Allowed preorder"/>
+                            <field name="preorder_threshold" string="Preorder threshold"/>
+                        </group>
+                    </group>
+                    <group>
+                        <!-- <group>
+                            <field name="qty_available" string="stock local disponible"/>
+                            <field name="incoming_qty" string="stock commandé"/>
+                            
+                            <field name="free_qty"/>
+                            <field name="outgoing_qty" sting="stock sortant"/>
+                            <field name="virtual_available" string="stock final théorique"/>
+                        </group>  -->
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

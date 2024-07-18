@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- #######################################  Stage  ######################################### -->
+    <record id="stage_view_form" model="ir.ui.view">
+        <field name="name">Stage Form</field>
+        <field name="model">orbit.stage</field>
+        <field name="arch" type="xml">
+            <form string="Stage Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="type_sale"/>
+                            <field name="requirements"/>
+                        </group>
+                        <group>
+                            <field name="next_stage_id"/>
+                            <field name="fold" string="Être plier" widget="toggle"/>
+                            <field name="group_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Groupes de Validation">
+                            <field name="group_usr_id">
+                                <tree string="Groupes Users">
+                                    <field name="name"/>
+                                    <field name="full_name"/>
+                                    <field name="category_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stage_view_list" model="ir.ui.view">
+        <field name="name">Stage Tree</field>
+        <field name="model">orbit.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Stage liste" decoration-info="name">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="type_sale"/>
+                <field name="requirements"/>
+                <field name="group_count" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="actions_list_stages" model="ir.actions.act_window">
+        <field name="name">Stages de vente</field>
+        <field name="res_model">orbit.stage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Créer une nouvelle Étape</p>
+        </field>
+    </record>
+</odoo>

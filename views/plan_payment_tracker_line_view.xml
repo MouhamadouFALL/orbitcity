@@ -1,0 +1,126 @@
+<odoo>
+    <data>
+
+        <!-- Extension de la vue formulaire de sale.order -->
+        <record id="view_order_form_inherit_deposit_info" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.deposit.info</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Ajouter un nouvel onglet pour les factures d'acompte -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Factures d'Acompte">
+                        <field name="invoice_down" widget="one2many_list" nolabel="1"/>
+<!--                            <tree string="Factures d'Acompte">-->
+<!--                                <field name="invoice_number"/>-->
+<!--                                <field name="invoice_date"/>-->
+<!--                                <field name="invoice_total"/>-->
+<!--                                <field name="amount_paid"/>-->
+<!--                                <field name="amount_due"/>-->
+<!--                                <field name="payment_state"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+                    </page>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Gestion Montants">
+                        <group>
+                            <group>
+                                <field name="ttl_amount" readonly="1"/>
+                                <field name="ttl_paid" readonly="1"/>
+
+                            </group>
+                            <group>
+                                <field name="ttl_overdue" readonly="1"/>
+                                <field name="ttl_due" readonly="1" string="TEST"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <!-- Dashboard Tab in Sale Order Form View -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Dashboard">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="expiration_date" string="Date Livraison"/>
+                            </group>
+                            <group>
+                                <field name="amount_total" string="Total"/>
+                                <field name="ttl_paid"/>
+                                <field name="ttl_overdue"/>
+                            </group>
+                        </group>
+                        <!--<group>
+                            <field name="due_payment_lines">
+                                <tree>
+                                    <field name="move_id"/>
+                                    <field name="date_maturity"/>
+                                    <field name="amount_residual"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <field name="invoice_down">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="invoice_date_due"/>
+                                    <field name="amount_total_signed"/>
+                                    <field name="payment_state"/>
+                                </tree>
+                            </field>
+                        </group>-->
+                    </page>
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Paiements">
+                        <field name="payments" widget="one2many_list" nolabel="1"/>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Définition des champs calculés dans le modèle sale.order -->
+        <!--<record id="model_sale_order_inherit_deposit_info" model="ir.model.fields">
+            <field name="name">deposit_invoice_ids</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="field_description">Factures d'Acompte</field>
+            <field name="ttype">one2many</field>
+            <field name="relation">account.move</field>
+            <field name="relation_field">invoice_origin</field>
+        </record>
+
+        <record id="model_sale_order_total_paid" model="ir.model.fields">
+            <field name="name">total_paid</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="field_description">Total Payé</field>
+            <field name="ttype">float</field>
+        </record>
+
+        <record id="model_sale_order_total_due" model="ir.model.fields">
+            <field name="name">total_due</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="field_description">Total Dû</field>
+            <field name="ttype">float</field>
+        </record>
+
+        <record id="model_sale_order_total_amount" model="ir.model.fields">
+            <field name="name">total_amount</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="field_description">Montant Total</field>
+            <field name="ttype">float</field>
+        </record>
+
+        <record id="model_sale_order_total_overdue" model="ir.model.fields">
+            <field name="name">total_overdue</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="field_description">Montant Échu</field>
+            <field name="ttype">float</field>
+        </record>-->
+
+    </data>
+</odoo>

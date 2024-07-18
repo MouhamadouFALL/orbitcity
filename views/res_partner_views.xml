@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Ajouter une entreprise pour affiliation -->
+    <record id="view_partner_enterprise_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="company_type" position="replace">
+                <field name="is_enterprise" invisible="1"/>
+                <field name="company_type" widget="radio" options="{'horizontal': true}"/>
+            </field>
+            <xpath expr="sheet/group" position="after">
+                <group string="Meta infos Entreprise" attrs="{'invisible': [('is_company', '=', False)]}">
+                    <group>
+                        <field name="register_com"/>
+                        <field name="ninea"/>
+                    </group>
+                    <group></group>
+                </group>
+            </xpath>
+            <xpath expr="sheet/group/group/field[@name='function']" position="before">
+                <field name="is_main_contact" attrs="{'invisible': [('is_company', '=', True)]}"
+                       groups="orbit.admin_group_user"/>
+            </xpath>
+            <field name="parent_id" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', '&amp;', ('is_company','=',
+                    True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}
+                </attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- ############################### Ajouter client Individu ########################### -->
+    <record model="ir.actions.act_window" id="orbit_partner_indiv">
+        <field name="name">Individus Partenaires</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="context">{'default_company_type': 'person', 'search_default_is_company': False}</field>
+        <field name="domain">[('is_company', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer un nouveau Client
+            </p>
+            <p>
+                Fidèlisation Client
+            </p>
+        </field>
+    </record>
+
+    <!-- ############################ Actions ############################ -->
+    <record model="ir.actions.act_window" id="orbit_partner_enterprise">
+        <field name="name">Entreprises Partenaires</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="context">{'default_company_type':'company', 'search_default_is_company': True}</field>
+        <field name="domain">[('is_company', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer un nouveau Partenaire (Entreprise affilliée)
+            </p>
+            <p>
+                Programme Affilliation
+            </p>
+        </field>
+    </record>
+
+    <record id="view_res_partner_enterprise_filter" model="ir.ui.view">
+        <field name="name">res.partner.select</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Search Partner">
+                <field name="name"
+                       filter_domain="['|', '|', ('display_name', 'ilike', self), ('ref', '=', self), ('email', 'ilike', self)]"/>
+                <field name="parent_id" domain="[('is_company', '=', True)]" operator="child_of"/>
+                <field name="email" filter_domain="[('email', 'ilike', self)]"/>
+                <field name="phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]"/>
+                <field name="category_id" string="Tag" filter_domain="[('category_id', 'child_of', self)]"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="Individuals" name="type_person" domain="[('is_company', '=', False)]"/>
+                <filter string="Companies" name="type_company" domain="[('is_company', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ************************************ Inherit Form view sale order ************************************ -->
+    <record id="view_orbit_order_form" model="ir.ui.view">
+        <field name="name">orbit.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- ######################################### Header ######################################### -->
+            
+            <field name="state" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
+            </field>
+            <field name="state" position="before">
+                <button name="action_to_delivered" type="object" string="To deliver" data-hotkey="q" class="btn-primary"
+                attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'sale')]}"/>
+            </field>
+            <field name="state" position="before">
+                <button name="action_delivered" type="object" string="Delivered" data-hotkey="q" class="btn-primary"
+                attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'to_delivered')]}"/>
+            </field>
+
+            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                <attribute name="string">Invoice</attribute>
+                <attribute name="context">{'default_advance_payment_method': 'delivered'}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', '!=', 'sale')]}</attribute>
+            </xpath>
+
+
+            <!-- ######################################### Sheet ######################################### -->
+            <field name="partner_id" position="before">
+                <field name="type_sale" widget="badge" attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}"
+                       decoration-primary="type_sale == 'order'"
+                       decoration-success="type_sale == 'preorder'"
+                       decoration-muted="type_sale == 'creditorder'"
+                />
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('type_sale', '=', 'order')]}</attribute>
+            </field>
+
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="orbit_sale_order">
+        <field name="name">Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,calendar,activity</field>
+        <field name="context">{'default_type_sale':'order', 'search_default_type_sale': 'order',}</field>
+        <field name="domain">[('type_sale','=','order')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your order standard
+            </p>
+            <p>
+                Create and manage your sale order here
+            </p>
+        </field>
+    </record>
+
+</odoo>
