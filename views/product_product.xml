@@ -6,8 +6,13 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <span class="d-inline-block">
+                
+                    <field name="en_promo"/>
+                    <label for="en_promo"/>
+
                     <field name="is_preorder"/>
                     <label for="is_preorder"/>
+
                 </span>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">

@@ -13,12 +13,16 @@ class ProductTemplate(models.Model):
 
     # la précommande sera activée uniquement lorsque la quantité disponible du produit est inférieure à un seuil défini
     preorder_threshold = fields.Integer(string="Preorder threshold", default=5)
+
+    # champs pour la promotion
+    en_promo = fields.Boolean(string="En promo", default=False, store=True)
     
 
 
 class Product(models.Model):
     _inherit = 'product.product'
 
+    
     # qty_available, virtual_available, free_qty, incoming_qty, outgoing_qty
     qty_available = fields.Float(
         'Quantity On Hand', compute='_compute_quantities', search='_search_qty_available',
