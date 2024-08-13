@@ -16,6 +16,37 @@ class ProductTemplate(models.Model):
 
     # champs pour la promotion
     en_promo = fields.Boolean(string="En promo", default=False, store=True)
+
+    # 
+    ttc_price = fields.Float(
+        'TTC Price',
+        default=1.0,
+        digits='ttc Price', compute='_compute_ttc_price' , store=True
+    )
+    
+    preorder_price = fields.Float(
+        'Preorder Price', digits='preorder Price', help="Price for preorders. This price will be applied when a product is preordered."
+    )
+
+    # promo_price = fields.Float(
+    #     'Promo Price',
+    #     digits='Promo Price',
+    #     help="Price for promotions. This price will be applied when a product is in promotion",
+    #     compute='_compute_promo_price' ,
+    #     store=True
+    # )
+
+    #
+    # @api.depends('list_price', 'tax_id')
+    # def _compute_promo_price(self):
+    #     for rec in self:
+    #         rec.promo_price = rec.list_price * (1 + rec.tax_id.amount /
+    #                                             100)
+
+    @api.depends('list_price')
+    def _compute_ttc_price(self):
+        for record in self:
+            record.ttc_price = record.list_price * 1.18
     
 
 

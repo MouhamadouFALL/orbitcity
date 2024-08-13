@@ -15,6 +15,23 @@
 
                 </span>
             </xpath>
+            <xpath expr="//div[@name='pricing']" position="after">
+                <label for="preorder_price"/>
+                <div >
+                    <field name="preorder_price" class="oe_inline" widget='monetary'
+                    options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                </div>
+                <label for="ttc_price" string="TTC Price" />
+                <div>
+                    <field name="ttc_price" widget='monetary'
+                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                </div>
+                <!-- <label for="promo_price"/>
+                <div>
+                    <field name="promo_price" class="oe_inline" widget='monetary'
+                    options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                </div> -->
+            </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
                 <page string="Preorder">
                     <group string="Preorder">
@@ -27,15 +44,17 @@
                             <field name="preorder_threshold" string="Preorder threshold"/>
                         </group>
                     </group>
-                    <group>
-                        <!-- <group>
-                            <field name="qty_available" string="stock local disponible"/>
-                            <field name="incoming_qty" string="stock commandé"/>
-                            
-                            <field name="free_qty"/>
-                            <field name="outgoing_qty" sting="stock sortant"/>
-                            <field name="virtual_available" string="stock final théorique"/>
-                        </group>  -->
+                </page>
+                <page string="Dashboard">
+                    <group string="Preorder">
+                        <group >
+                            <field name="preorder_deadline" string="Dead Line preorder allowed"/>
+                            <field name="preorder_payment_option" string="option payment for delivered preorder"/>
+                        </group>                       
+                        <group>
+                            <field name="preorder_quantity" string="Quantity Allowed preorder"/>
+                            <field name="preorder_threshold" string="Preorder threshold"/>
+                        </group>
                     </group>
                 </page>
             </xpath>
