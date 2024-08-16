@@ -13,7 +13,7 @@
                 <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
                     <attribute name="string">Down Payment Invoice</attribute>
                     <attribute name="context">{'default_advance_payment_method': 'percentage'}</attribute>
-                    <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['preorder', 'creditorder']), '|', ('invoice_status', '!=', 'no'), ('state', 'not in', ['sale', 'to_delivered'])]}</attribute>
+                    <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['preorder', 'creditorder']), ('state', 'not in', ['sale', 'to_delivered'])]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_draft']" position="after">
                     <button

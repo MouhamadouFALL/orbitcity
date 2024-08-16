@@ -52,16 +52,22 @@
                 <page string="Price &amp; Quantity">
                     <group string="Price and Quantity">
                         <group>
+                            <group>
+                                <field name="qty_available" string="Quantité disponible" readonly="1"/>
+                                <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
+                                <field name="virtual_available" string="Quantité prévisionnelle" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
+                                <field name="outgoing_qty" string="Quantité sortante précommandé" readonly="1"/>
+                                <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
+                                <field name="free_qty" string="Quantité Libre" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
                             <field name="list_price" string="Price order" readonly="1"/>
                             <field name="preorder_price" string="Price preorder" readonly="1"/>
                             <field name="standard_price" string="Price purchase" readonly="1"/>
-                        </group>
-                        <group>
-                            <field name="qty_available" string="Quantité disponible" readonly="1"/>
-                            <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
-                            <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
-                            <field name="outgoing_qty" string="Quantité sortante précommandé" readonly="1"/>
-                            <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
                         </group>
                     </group>
                 </page>

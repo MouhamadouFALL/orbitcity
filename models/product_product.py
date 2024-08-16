@@ -39,6 +39,11 @@ class ProductTemplate(models.Model):
     # taux de promo_price
     rate_price = fields.Float("Taux de promotion")
 
+    preordered_qty = fields.Float('Preordered Quantity', 
+                                  compute='_compute_preordered_qty', store=True, 
+                                  help="Total quantity of products that have been preordered by customers but not yet delivered."
+                                  )
+
     
     @api.depends('rate_price')
     def _compute_promo_price(self):
