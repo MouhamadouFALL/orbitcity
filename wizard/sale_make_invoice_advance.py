@@ -4,9 +4,44 @@
 from odoo import api, models, fields, _
 from odoo.fields import Command
 
+
+# TYPE_INVOICE = [
+#     ('delivered', "Regular invoice"),
+#     ('percentage', "Down payment (percentage)"),
+#     ('fixed', "Down payment (fixed amount)"),
+# ]
+
+# TYPE_INVOICE_PREORDER = [
+#     ('delivered', "Regular invoice")
+# ]
+
 # class non utiliser
 class SaleAdvancePaymentInv(models.TransientModel):
     _inherit = "sale.advance.payment.inv"
+
+
+    # def _get_steps(self):
+    #     ctx = dict(self.env.context)
+    #     selection = []
+    #     if 'default_type_sale' in ctx:
+    #         if ctx.get('default_type_sale') == 'order':
+    #             selection = TYPE_INVOICE
+    #         if ctx.get('default_type_sale') == 'preorder':
+    #             selection = TYPE_INVOICE_PREORDER
+    #         if ctx.get('default_type_sale') == 'creditorder':
+    #             selection = TYPE_INVOICE_PREORDER
+    #     else:
+    #         selection = TYPE_INVOICE
+
+    #     return selection
+
+    # advance_payment_method = fields.Selection(
+    #     selection=_get_steps,
+    #     string="Create Invoice",
+    #     default='delivered',
+    #     required=True,
+    #     help="A standard invoice is issued with all the order lines ready for invoicing,"
+    #         "according to their invoicing policy (based on ordered or delivered quantity).")
 
     # @api.model
     # def _sale_ref(self):

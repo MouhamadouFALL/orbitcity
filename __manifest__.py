@@ -26,6 +26,7 @@
         'wizard/preorder_advance_payment_wzd_view.xml',
         'wizard/crm_opportunity_to_quotation_orbit_views.xml',
         'wizard/crm_type_sale_for_quotation_views.xml',
+        # 'wizard/sale_make_invoice_advance_inherited_views.xml',
 
         # 'views/crm_lead_views.xml',
         # 'views/payment_plan_views.xml',
@@ -42,6 +43,7 @@
         # 'views/sale_order_payment_plan_views.xml',
         # 'views/edit_account_move.xml',
         # 'views/plan_payment_tracker_line_view.xml',
+        'views/account_move_views.xml',
 
         # ***************************** Menu ****************************
         'views/menu_views.xml',

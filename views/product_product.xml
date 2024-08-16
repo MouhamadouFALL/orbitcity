@@ -21,16 +21,20 @@
                     <field name="preorder_price" class="oe_inline" widget='monetary'
                     options="{'currency_field': 'currency_id', 'field_digits': True}"/>
                 </div>
-                <label for="ttc_price" string="TTC Price" />
+               <!--  <label for="ttc_price" string="TTC Price" />
                 <div>
                     <field name="ttc_price" widget='monetary'
                         options="{'currency_field': 'currency_id', 'field_digits': True}" />
-                </div>
-                <!-- <label for="promo_price"/>
-                <div>
-                    <field name="promo_price" class="oe_inline" widget='monetary'
-                    options="{'currency_field': 'currency_id', 'field_digits': True}"/>
                 </div> -->
+                <label for="rate_price" string="Rate Price" />
+                <div>
+                    <field name="rate_price" widget='float' invisible="{('en_promo', '=', False)}"/>
+                </div>
+                <label for="promo_price" string="Promo Price" />
+                <div>
+                    <field name="promo_price" widget='monetary'
+                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                </div>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
                 <page string="Preorder">
@@ -45,18 +49,21 @@
                         </group>
                     </group>
                 </page>
-                <page string="Dashboard">
-                    <group string="Preorder">
-                        <group >
-                            <field name="preorder_deadline" string="Dead Line preorder allowed"/>
-                            <field name="preorder_payment_option" string="option payment for delivered preorder"/>
-                        </group>                       
+                <page string="Price &amp; Quantity" attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
+                    <group string="Price and Quantity">
                         <group>
-                            <field name="preorder_quantity" string="Quantity Allowed preorder"/>
-                            <field name="preorder_threshold" string="Preorder threshold"/>
+                            <field name="list_price" string="1st due date" readonly="1"/>
+                            <field name="standard_price" string="2nd due date" readonly="1"/>
+                            <field name="preorder_price" string="3rd due date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="qty_available" string="Quantité disponible" readonly="1"/>
+                            <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
+                            <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
+                            <field name="outgoing_qty" string="Quantité sortante précommandé" readonly="1"/>
+                            <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
                         </group>
                     </group>
-                </page>
             </xpath>
         </field>
     </record>

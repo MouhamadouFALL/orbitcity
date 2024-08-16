@@ -12,6 +12,19 @@ class AccountMove(models.Model):
         states={'draft': [("readonly", False)]}
     )
 
+    percentage_of_payment = fields.Float(string="Percentage of Payment",  compute='_compute_percentage_of_payment')
+
+    @api.depends('sale_id.amount_total', 'line_ids.price_subtotal')
+    def _compute_percentage_of_payment(self):
+
+        for record in self:
+            amount = sum(record.line_ids.mapped('price_subtotal'))
+            total_amount = sum(record.sale_id.mapped('amount_total'))
+            if total_amount > 0:
+                record.percentage_of_payment = (amount / total_amount) * 100
+            else:
+                record.percentage_of_payment = 0
+
     def action_post(self):
         # Automatic reconciliation of payment when invoice confirmed.
         res = super(AccountMove, self).action_post()

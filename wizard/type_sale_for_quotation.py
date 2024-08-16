@@ -31,7 +31,7 @@ class TypeSale(models.TransientModel):
         return result
 
     type_sale = fields.Selection(
-        selection=[
+        selection = [
             ('order', "Commande"),
             ('preorder', "Precommande"),
             ('creditorder', "Commande credit"),

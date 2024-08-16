@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
 
-            <xpath expr="//button[@name='action_post'][1]" position="attributes">
+            <!-- <xpath expr="//button[@name='action_post'][1]" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', '!=', 'entry')]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_post'][2]">
@@ -18,7 +18,14 @@
 
             <field name="payment_reference" position="before">
                 <field name="invoice_origin" string="Ref SO"/>
-            </field>
+            </field> -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="invoice_origin" string="Ref SO"/><label for="percentage_of_payment"/>
+                <div class="d-flex align-items-baseline">
+                    <field name="percentage_of_payment" string="Acompte (%)" class="oe_inline" readonly="1"/>
+                    <span>%</span>
+                </div>
+            </xpath>
 
         </field>
     </record>
@@ -28,10 +35,13 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_invoice_tree"/>
         <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="percentage_of_payment" string="Acompte (%)" optional="show"/>
+            </field>
             <field name="invoice_date" position="before">
                 <field name="invoice_origin" optional="show" string="Source Document"/>
             </field>
-            <field name="invoice_origin" position="replace"></field>
+            <!-- <field name="invoice_origin" position="replace"></field> -->
         </field>
     </record>
 
