@@ -28,7 +28,7 @@
                 </div> -->
                 <label for="rate_price" string="Rate Price" />
                 <div>
-                    <field name="rate_price" widget='float' invisible="{('en_promo', '=', False)}"/>
+                    <field name="rate_price" widget='float'/>
                 </div>
                 <label for="promo_price" string="Promo Price" />
                 <div>
@@ -49,12 +49,12 @@
                         </group>
                     </group>
                 </page>
-                <page string="Price &amp; Quantity" attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
+                <page string="Price &amp; Quantity">
                     <group string="Price and Quantity">
                         <group>
-                            <field name="list_price" string="1st due date" readonly="1"/>
-                            <field name="standard_price" string="2nd due date" readonly="1"/>
-                            <field name="preorder_price" string="3rd due date" readonly="1"/>
+                            <field name="list_price" string="Price order" readonly="1"/>
+                            <field name="preorder_price" string="Price preorder" readonly="1"/>
+                            <field name="standard_price" string="Price purchase" readonly="1"/>
                         </group>
                         <group>
                             <field name="qty_available" string="Quantité disponible" readonly="1"/>
@@ -64,6 +64,7 @@
                             <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
                         </group>
                     </group>
+                </page>
             </xpath>
         </field>
     </record>

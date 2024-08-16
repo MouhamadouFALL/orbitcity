@@ -37,7 +37,7 @@ class ProductTemplate(models.Model):
     )
 
     # taux de promo_price
-    rate_price = fields.Flat("Taux de promotion")
+    rate_price = fields.Float("Taux de promotion")
 
     
     @api.depends('rate_price')
