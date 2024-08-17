@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "CCBM shop",
+    'name': "CCBM SHOP",
     'summary': """ Management three Business: Order, Preorder and creditorder.""",
     'description': """
         Optimising sales flows by effectively managing three categories of transactional processes: 
@@ -8,11 +8,11 @@
     """,
     'author': "CCBM DEV",
     'license': "AGPL-3",
-    'website': "http://www.orbitcity.com",
+    'website': "https://ccbme.sn",
     'category': 'CCBM/',
     'version': '16.0.0',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale_crm', 'crm', 'account', 'purchase', 'stock', 'account'],
+    'depends': ['base', 'sale', 'crm', 'account', 'purchase', 'stock'],
 
     # always loaded
     'data': [
@@ -28,29 +28,28 @@
         'wizard/crm_type_sale_for_quotation_views.xml',
         # 'wizard/sale_make_invoice_advance_inherited_views.xml',
 
-        # 'views/crm_lead_views.xml',
-        # 'views/payment_plan_views.xml',
-
-        'views/sale_order_orbit_views.xml',
-        'views/preorder_orbit_views.xml',
-        'views/product_product.xml',
-        # 'views/account_move_views.xml',
         'views/res_partner_views.xml',
         'views/affiliate_views.xml',
+        # 'views/crm_lead_views.xml',
+        # 'views/payment_plan_views.xml',
+        'views/product_product.xml',
+        'views/sale_order_orbit_views.xml',
+        'views/preorder_orbit_views.xml',
+        'views/account_move_views.xml',
+        
         # 'views/account_tracker_views.xml',
         # 'views/account_tracker_line_views.xml',
         # 'views/orbit_stage_views.xml',
         # 'views/sale_order_payment_plan_views.xml',
         # 'views/edit_account_move.xml',
         # 'views/plan_payment_tracker_line_view.xml',
-        'views/account_move_views.xml',
 
         # ***************************** Menu ****************************
         'views/menu_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/demo.xml',
+        # 'demo/demo.xml',
     ],
     'application': True,
     'installable': True,
