@@ -46,9 +46,9 @@
                 <attribute name="invisible">1</attribute>
             </field>
 
-            <field name="sale_order_template_id" position="attributes">
+            <!-- <field name="sale_order_template_id" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </field>
+            </field> -->
 
         </field>
     </record>

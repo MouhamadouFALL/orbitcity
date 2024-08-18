@@ -40,7 +40,7 @@ class ProductTemplate(models.Model):
     rate_price = fields.Float("Taux de promotion")
 
     preordered_qty = fields.Float('Preordered Quantity', 
-                                  compute='_compute_preordered_qty', store=True, 
+                                  #compute='_compute_preordered_qty', store=True, 
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
 
