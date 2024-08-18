@@ -12,7 +12,7 @@
     'category': 'CCBM/',
     'version': '16.0.0',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'crm', 'account', 'purchase', 'stock'],
+    'depends': ['base', 'sale_crm', 'crm', 'account', 'purchase', 'stock'],
 
     # always loaded
     'data': [
