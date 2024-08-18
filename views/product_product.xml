@@ -61,7 +61,7 @@
                                 <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
                                 <field name="outgoing_qty" string="Quantité sortante précommandé" readonly="1"/>
                                 <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
-                                <field name="free_qty" string="Quantité Libre" readonly="1"/>
+                                <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/> -->
                             </group>
                         </group>
                         <group>
