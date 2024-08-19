@@ -102,3 +102,5 @@ class SaleOrder(models.Model):
                 order.write({
                     'state': 'to_delivered'
                 })
+
+                

@@ -25,7 +25,6 @@
 
             <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
                 <attribute name="string">Invoice</attribute>
-                <attribute name="context">{'default_advance_payment_method': 'delivered'}</attribute>
                 <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', '!=', 'sale')]}</attribute>
             </xpath>
 
