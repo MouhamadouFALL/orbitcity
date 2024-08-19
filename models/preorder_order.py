@@ -283,6 +283,15 @@ class Preorder(models.Model):
     def action_delivered(self):
         for order in self:
             undelivered_lines = order.order_line.filtered(lambda line: line.qty_delivered < line.product_uom_qty)
+            if undelivered_lines:
+                undelivered_produts = ", ".join(undelivered_lines.mapped('product_id.name'))
+                raise exceptions.ValidationError(_("Veuillez effectuer la livraison des produits non livrés : {0}".format(undelivered_produts)))
+            else:
+               return order.write({ 'state': 'delivered' })
+            
+    def action_delivered_a(self):
+        for order in self:
+            undelivered_lines = order.order_line.filtered(lambda line: line.qty_delivered < line.product_uom_qty)
             if undelivered_lines and order.delivery_status != 'full':
                 undelivered_produts = ", ".join(undelivered_lines.mapped('product_id.name'))
                 raise exceptions.ValidationError(_("Veuillez effectuer la livraison des produits non livrés : {0}".format(undelivered_produts)))
