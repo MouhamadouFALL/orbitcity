@@ -19,11 +19,12 @@ class ProductTemplate(models.Model):
     )
 
     # 
-    # ttc_price = fields.Float(
-    #     'TTC Price',
-    #     default=1.0,
-    #     digits='ttc Price', compute='_compute_ttc_price' , store=True
-    # )
+    ttc_price = fields.Float(
+        'TTC Price',
+        default=1.0,
+        digits='ttc Price', 
+        compute='_compute_ttc_price' , store=True
+    )
 
      # champs pour la promotion
     en_promo = fields.Boolean(string="En promo", default=False, store=True)
@@ -50,10 +51,10 @@ class ProductTemplate(models.Model):
         for rec in self:
             rec.promo_price = rec.list_price - ((rec.list_price * rec.rate_price) / 100)
 
-    # @api.depends('list_price')
-    # def _compute_ttc_price(self):
-    #     for record in self:
-    #         record.ttc_price = record.list_price * 1.18
+    @api.depends('list_price')
+    def _compute_ttc_price(self):
+        for record in self:
+            record.ttc_price = record.list_price * 1.18
     
 
 

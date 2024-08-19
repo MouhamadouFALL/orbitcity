@@ -266,19 +266,19 @@ class Preorder(models.Model):
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
                 
-    def action_to_delivered(self):
-        for order in self:
-            _logger.info(f"Status de paiements {order.check_invoices_paid()}")
-            if order.type_sale == 'order':
-                if order.amount_residual <= 0:
-                    return order.write({ 'state': 'to_delivered' })  
-                else:
-                    raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
-            if order.type_sale == 'preorder':
-                if order.amount_residual <= 0 and order.advance_payment_status == 'paid':
-                    return order.write({ 'state': 'to_delivered' })
-                else:
-                    raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
+    # def action_to_delivered(self):
+    #     for order in self:
+    #         _logger.info(f"Status de paiements {order.check_invoices_paid()}")
+    #         if order.type_sale == 'order':
+    #             if order.amount_residual <= 0:
+    #                 return order.write({ 'state': 'to_delivered' })  
+    #             else:
+    #                 raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
+    #         if order.type_sale == 'preorder':
+    #             if order.amount_residual <= 0 and order.advance_payment_status == 'paid':
+    #                 return order.write({ 'state': 'to_delivered' })
+    #             else:
+    #                 raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
         
     def action_delivered(self):
         for order in self:
