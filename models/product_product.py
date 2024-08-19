@@ -5,7 +5,7 @@ class ProductTemplate(models.Model):
 
     is_preorder = fields.Boolean(string="Available for preorder", default=True) # produit disponible pour une précommande
     preorder_deadline = fields.Date(string="preorder expery date") # date à laquelle un produit ne sera plus disponible pour une précommande
-    preorder_quantity = fields.Integer(string="Quantité de précommande", default=0) # quantité autorisé à précommandé pour un produit
+    preorder_quantity_allow = fields.Integer(string="Quantité de précommande", default=0) # quantité autorisé à précommandé pour un produit
     preorder_payment_option = fields.Selection([
         ('full', 'Paiement complet'),
         ('partial', 'Paiement partiel')
@@ -41,9 +41,24 @@ class ProductTemplate(models.Model):
     rate_price = fields.Float("Taux de promotion")
 
     preordered_qty = fields.Float('Preordered Quantity', 
-                                  #compute='_compute_preordered_qty', store=True, 
+                                  compute='_compute_preordered_qty', store=True, 
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
+    
+    @api.depends('order_line.product_uom_qty', 'order_line.state')
+    def _compute_preordered_qty(self):
+        for product in self:
+            
+            # Filtrer les lignes de commande client qui sont dans un état de précommande (par exemple, 'preorder')
+            preordered_lines = self.env['sale.order.line'].search([
+                ('product_id', '=', product.id),
+                ('order_id.state', '=', 'sale'),
+                ('order_id.type_sale', '=', 'preorder')
+                # Assumant que 'preorder' est l'état d'une précommande
+            ])
+            # Calculer la somme des quantités précommandées
+            product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines)
+
 
     
     @api.depends('rate_price')

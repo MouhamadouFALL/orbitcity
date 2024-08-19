@@ -44,7 +44,7 @@
                             <field name="preorder_payment_option" string="option payment for delivered preorder"/>
                         </group>                       
                         <group>
-                            <field name="preorder_quantity" string="Quantity Allowed preorder"/>
+                            <field name="preorder_quantity_allow" string="Quantity Allowed preorder"/>
                             <field name="preorder_threshold" string="Preorder threshold"/>
                         </group>
                     </group>
@@ -59,7 +59,7 @@
                             </group>
                             <group>
                                 <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
-                                <field name="outgoing_qty" string="Quantité sortante précommandé" readonly="1"/>
+                                <field name="preordered_qty" string="Quantité sortante précommandé" readonly="1"/>
                                 <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
                                 <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/> -->
                             </group>
