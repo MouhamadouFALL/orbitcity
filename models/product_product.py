@@ -1,4 +1,7 @@
 from odoo import models, fields, api
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -45,17 +48,17 @@ class ProductTemplate(models.Model):
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
     
-    @api.depends('order_line.product_uom_qty', 'order_line.state')
+    @api.depends('qty_available', 'outgoing_qty')
     def _compute_preordered_qty(self):
         for product in self:
-            
             # Filtrer les lignes de commande client qui sont dans un état de précommande (par exemple, 'preorder')
             preordered_lines = self.env['sale.order.line'].search([
-                ('product_id', '=', product.id),
-                ('order_id.state', '=', 'sale'),
+                ('product_id.product_tmpl_id', '=', product.id),
+                ('order_id.state', 'in', ['sale', 'to_delivered']),
                 ('order_id.type_sale', '=', 'preorder')
                 # Assumant que 'preorder' est l'état d'une précommande
             ])
+            _logger.info(f"line sale ====> {preordered_lines} ")
             # Calculer la somme des quantités précommandées
             product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines)
 
