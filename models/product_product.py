@@ -17,8 +17,8 @@ class ProductTemplate(models.Model):
     # la précommande sera activée uniquement lorsque la quantité disponible du produit est inférieure à un seuil défini
     preorder_threshold = fields.Integer(string="Preorder threshold", default=5)
 
-    preorder_price = fields.Float(
-        'Preorder Price', digits='preorder Price', help="Price for preorders. This price will be applied when a product is preordered."
+    preorder_price = fields.Monetary(
+        'Preorder Price', digits='preorder Price', default=1.0, help="Price for preorders. This price will be applied when a product is preordered."
     )
 
     # 
