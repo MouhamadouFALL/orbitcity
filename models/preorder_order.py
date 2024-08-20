@@ -236,6 +236,11 @@ class Preorder(models.Model):
             self._create_advance_invoices(dates, amounts)
             self.message_post(body="La commande a été confirmée avec succès.")
             return res
+        
+    # @api.onchange('amount_residual')
+    # def _onchange_state(self):
+    #     if self.amount_residual <= 0:
+    #         return self.write({ 'state': 'to_delivered' })
 
     def _create_advance_invoices(self, dates, amounts):
         for order in self:

@@ -58,9 +58,9 @@
                                 <field name="virtual_available" string="Quantité prévisionnelle" readonly="1"/>
                             </group>
                             <group>
-                                <field name="outgoing_qty" string="Quantité sortante commandé" readonly="1"/>
-                                <field name="preordered_qty" string="Quantité sortante précommandé" readonly="1"/>
-                                <field name="outgoing_qty" string="Quantité sortante" readonly="1"/>
+                                <field name="ordered_qty" string="Quantité commandée" readonly="1"/>
+                                <field name="preordered_qty" string="Quantité précommandée" readonly="1"/>
+                                <!-- <field name="outgoing_qty" string="Quantité total sortante" readonly="1"/> -->
                                 <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/> -->
                             </group>
                         </group>
@@ -74,4 +74,35 @@
             </xpath>
         </field>
     </record>
+
+    <!-- ************************************ View Tree ************************************ -->
+        <record id="view_preorder_product_product_stock_tree" model="ir.ui.view">
+            <field name="name">product.product.stock.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_product_stock_tree"/>
+            <field name="arch" type="xml">
+                <field name="outgoing_qty" position="after">
+                    <field name="preordered_qty" optional="show" sum="Total Preorder_qty"/>
+                    <field name="ordered_qty" invisible="1" sum="Total Order_qty" />
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_product_stock_prorder_view">
+        <field name="name">Stock</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_preorder_product_product_stock_tree"/>
+        <field name="search_view_id" ref="stock.product_search_form_view_stock_report"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('detailed_type', '=', 'product')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock to show
+            </p><p>
+                Create some storable products to see their stock info in this view.
+            </p>
+        </field>
+    </record>
+
 </odoo>

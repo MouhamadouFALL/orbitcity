@@ -47,6 +47,10 @@ class ProductTemplate(models.Model):
                                   compute='_compute_preordered_qty', store=True, 
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
+    ordered_qty = fields.Float('Ordered Quantity', 
+                                  compute='_compute_ordered_qty', store=True, 
+                                  help="Total quantity of products that have been ordered by customers but not yet delivered."
+                                  )
     
     @api.depends('qty_available', 'outgoing_qty')
     def _compute_preordered_qty(self):
@@ -58,9 +62,53 @@ class ProductTemplate(models.Model):
                 ('order_id.type_sale', '=', 'preorder')
                 # Assumant que 'preorder' est l'état d'une précommande
             ])
-            _logger.info(f"line sale ====> {preordered_lines} ")
+            #if preordered_lines.
+            product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines) - sum(line.qty_delivered for line in preordered_lines)
+
+    @api.depends('qty_available', 'outgoing_qty')
+    def _compute_ordered_qty(self):
+        for product in self:
+            # Filtrer les lignes de commande client qui sont dans un état de précommande (par exemple, 'preorder')
+            ordered_lines = self.env['sale.order.line'].search([
+                ('product_id.product_tmpl_id', '=', product.id),
+                ('order_id.state', 'in', ['sale', 'to_delivered']),
+                ('order_id.type_sale', '=', 'order')
+                # Assumant que 'preorder' est l'état d'une précommande
+            ])
+            #if preordered_lines.
+            product.ordered_qty = sum(line.product_uom_qty for line in ordered_lines) - sum(line.qty_delivered for line in ordered_lines)
+            
+    
+    @api.depends('qty_available', 'outgoing_qty')
+    def _compute_preordered_qty_dev(self):
+        for product in self:
+            # Filtrer les lignes de commande client qui sont dans un état de précommande (par exemple, 'preorder')
+            preordered_lines = self.env['sale.order.line'].search([
+                ('product_id.product_tmpl_id', '=', product.id),
+                ('order_id.state', 'in', ['sale', 'to_delivered']),
+                ('order_id.type_sale', '=', 'preorder')
+                # Assumant que 'preorder' est l'état d'une précommande
+            ])
+            preorder_lines_delivered = self.env['sale.order.line'].search([
+                ('product_id.product_tmpl_id', '=', product.id),
+                ('order_id.state', 'in', ['delivered']),
+                ('order_id.type_sale', '=', 'preorder')
+                # Assumant que 'preorder' est l'état d'une précommande
+            ])
+            # _logger.info(f"line sale ====> {preordered_lines} ")
             # Calculer la somme des quantités précommandées
-            product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines)
+            product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines) - sum(line.qty_delivered for line in preorder_lines_delivered)
+            # preordered_qty_delivered = 0.0
+            # preordered_qty_undelivered = 0.0
+            # if preordered_lines:
+            #     preordered_qty_undelivered = sum(line.product_uom_qty for line in preordered_lines)
+
+            # if preorder_lines_delivered:
+            #     preordered_qty_delivered = sum(line.qty_delivered for line in preorder_lines_delivered)
+
+            # if (preordered_qty_undelivered > preordered_qty_delivered):
+                #product.preordered_qty = preordered_qty_undelivered - preordered_qty_delivered
+                
 
 
     
