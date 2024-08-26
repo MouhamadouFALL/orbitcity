@@ -132,6 +132,9 @@
                     <field name="type_sale" optional="hide" widget="badge"/>
                     <field name="third_payment_amount" invisible="1"/>
                 </field>
+                <field name="user_id" position="before">
+                    <field name="state" optional="show" widget="badge"/>
+                </field>
                 <field name='amount_total' position="after">
                     <field name="amount_payed" widget="monetary" optional="hide" sum="Total no payed"/>
                     <field name="amount_residual"

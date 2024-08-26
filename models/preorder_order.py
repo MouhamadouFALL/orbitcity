@@ -224,8 +224,8 @@ class Preorder(models.Model):
                 })
 
         if self.type_sale == 'order':
-            date = fields.Datetime.now()
-            self._create_invoices(date).action_post()
+            # date = fields.Datetime.now()
+            # self._create_invoices(date).action_post()
             self.message_post(body="La commande a été confirmée avec succès.")
             return res
         
