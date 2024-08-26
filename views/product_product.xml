@@ -72,17 +72,20 @@
     </record>
 
     <!-- ************************************ View Tree ************************************ -->
-        <record id="view_preorder_product_product_stock_tree" model="ir.ui.view">
-            <field name="name">product.product.stock.tree</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="stock.product_product_stock_tree"/>
-            <field name="arch" type="xml">
-                <field name="outgoing_qty" position="after">
-                    <field name="preordered_qty" optional="show" sum="Total Preorder_qty"/>
-                    <field name="ordered_qty" invisible="1" sum="Total Order_qty" />
-                </field>
+    <record id="view_preorder_product_product_stock_tree" model="ir.ui.view">
+        <field name="name">product.product.stock.tree</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_product_stock_tree"/>
+        <field name="arch" type="xml">
+            <field name="outgoing_qty" position="after">
+                <field name="preordered_qty" optional="show" sum="Total Preorder_qty"/>
+                <field name="ordered_qty" invisible="1" sum="Total Order_qty" />
             </field>
-        </record>
+        </field>
+    </record>
+
+    
+
 
         <record model="ir.actions.act_window" id="action_product_stock_prorder_view">
         <field name="name">Stock</field>
