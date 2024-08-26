@@ -17,40 +17,35 @@ class ProductTemplate(models.Model):
     # la précommande sera activée uniquement lorsque la quantité disponible du produit est inférieure à un seuil défini
     preorder_threshold = fields.Integer(string="Preorder threshold", default=5)
 
-    preorder_price = fields.Monetary(
-        'Preorder Price', digits='preorder Price', default=1.0, help="Price for preorders. This price will be applied when a product is preordered."
+    preorder_price = fields.Float('Preorder Price', digits=(16, 2),
+        help="Price for preorders. This price will be applied when a product is preordered."
     )
 
-    # 
-    ttc_price = fields.Float(
-        'TTC Price',
-        default=1.0,
-        digits='ttc Price', 
-        compute='_compute_ttc_price' , store=True
-    )
-
-     # champs pour la promotion
+    # champs pour la promotion
     en_promo = fields.Boolean(string="En promo", default=False, store=True)
 
     promo_price = fields.Float(
         'Promo Price',
-        digits='Promo Price',
+        digits=(16, 2),
         help="Price for promotions. This price will be applied when a product is in promotion",
-        compute='_compute_promo_price' ,
+        compute='_compute_promo_price',
         store=True
     )
 
-    # taux de promo_price
     rate_price = fields.Float("Taux de promotion")
 
-    preordered_qty = fields.Float('Preordered Quantity', 
-                                  compute='_compute_preordered_qty', store=True, 
+    preordered_qty = fields.Float('Preordered Quantity', compute='_compute_preordered_qty', store=True, 
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
-    ordered_qty = fields.Float('Ordered Quantity', 
-                                  compute='_compute_ordered_qty', store=True, 
+    ordered_qty = fields.Float('Ordered Quantity', compute='_compute_ordered_qty', store=True, 
                                   help="Total quantity of products that have been ordered by customers but not yet delivered."
                                   )
+    
+    @api.depends('rate_price')
+    def _compute_promo_price(self):
+        for prod in self:
+            if prod.list_price > 1.0:
+                prod.promo_price = prod.list_price * ((1 - prod.rate_price) / 100)
     
     @api.depends('qty_available', 'outgoing_qty')
     def _compute_preordered_qty(self):
@@ -109,20 +104,6 @@ class ProductTemplate(models.Model):
             # if (preordered_qty_undelivered > preordered_qty_delivered):
                 #product.preordered_qty = preordered_qty_undelivered - preordered_qty_delivered
                 
-
-
-    
-    @api.depends('rate_price')
-    def _compute_promo_price(self):
-        for rec in self:
-            rec.promo_price = rec.list_price - ((rec.list_price * rec.rate_price) / 100)
-
-    @api.depends('list_price')
-    def _compute_ttc_price(self):
-        for record in self:
-            record.ttc_price = record.list_price * 1.18
-    
-
 
 class Product(models.Model):
     _inherit = 'product.product'

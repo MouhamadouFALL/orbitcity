@@ -2,7 +2,7 @@
     <record id="view_product_form_inherit_preorder" model="ir.ui.view">
         <field name="name">product.form.inherit.preorder</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <span class="d-inline-block">
@@ -16,25 +16,21 @@
                 </span>
             </xpath>
             <xpath expr="//div[@name='pricing']" position="after">
+
                 <label for="preorder_price"/>
-                <div >
-                    <field name="preorder_price" class="oe_inline" widget='monetary'
-                    options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-                </div>
-               <!--  <label for="ttc_price" string="TTC Price" />
-                <div>
-                    <field name="ttc_price" widget='monetary'
-                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
-                </div> -->
-                <label for="rate_price" string="Rate Price" />
-                <div>
-                    <field name="rate_price" widget='float'/>
-                </div>
-                <label for="promo_price" string="Promo Price" />
-                <div>
-                    <field name="promo_price" widget='monetary'
+                <div name="preorder_price">
+                    <field name="preorder_price" class="oe_inline" widget='monetary' 
                         options="{'currency_field': 'currency_id', 'field_digits': True}" />
                 </div>
+                <label for="rate_price"/>
+                <div name="rate_price">
+                    <field name="rate_price" class="oe_inline" widget='float'/>
+                </div>
+                <label for="promo_price"/>
+                <div name="promo_price">
+                    <field name="promo_price" class="oe_inline" widget='monetary'/>
+                </div>
+
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
                 <page string="Preorder">
@@ -64,11 +60,11 @@
                                 <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/> -->
                             </group>
                         </group>
-                        <group>
+                        <!-- <group>
                             <field name="list_price" string="Price order" readonly="1"/>
                             <field name="preorder_price" string="Price preorder" readonly="1"/>
                             <field name="standard_price" string="Price purchase" readonly="1"/>
-                        </group>
+                        </group> -->
                     </group>
                 </page>
             </xpath>

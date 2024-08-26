@@ -37,3 +37,4 @@ class AccountMove(models.Model):
                 if data.get("move_id") in sale_order.account_payment_ids.move_id.ids:
                     self.js_assign_outstanding_line(line_id=data.get("id"))
         return res
+    

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models, api, _, exceptions
 from odoo.tools import float_compare
 from datetime import timedelta
@@ -225,8 +224,8 @@ class Preorder(models.Model):
                 })
 
         if self.type_sale == 'order':
-            # date = fields.Datetime.now()
-            # self._create_invoices(date).action_post()
+            date = fields.Datetime.now()
+            self._create_invoices(date).action_post()
             self.message_post(body="La commande a été confirmée avec succès.")
             return res
         

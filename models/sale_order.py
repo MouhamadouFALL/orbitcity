@@ -75,7 +75,8 @@ class SaleOrder(models.Model):
     type_sale = fields.Selection(
         selection=TYPE_SALE,
         string="Type Sale", required=True, readonly=True, copy=False, index=True,
-        default = lambda self: self.env.context.get('default_type_sale', 'order'), store=True
+        default = lambda self: self.env.context.get('default_type_sale', 'order'), 
+        store=True
     )
 
     state = fields.Selection(
@@ -91,7 +92,7 @@ class SaleOrder(models.Model):
                 vals['type_sale'] = self.env.context['default_type_sale']
 
         return super(SaleOrder, self).create(vals_list)
-    
+
     @api.depends("amount_residual")
     def action_delivered(self):
         for order in self:
