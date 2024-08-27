@@ -25,8 +25,8 @@
 
         <!-- Menu Ventes -->
         <menuitem id="orbit_menu_sale" name="Ventes" sequence="11">
-            <menuitem id="orbit_order_menu" name="Commandes" action="orbit.orbit_sale_order" groups="orbit.order_group_user" sequence="1"/>
-            <menuitem id="orbit_preorder_menu" name="Precommandes" action="orbit.orbit_preorder" groups="orbit.preorder_group_user" sequence="2"/>
+            <menuitem id="orbit_order_menu" name="Commandes" action="orbit.orbit_sale_order" groups="orbit.sale_ccbmshop_group_user" sequence="1"/>
+            <menuitem id="orbit_preorder_menu" name="Precommandes" action="orbit.orbit_preorder" groups="orbit.sale_ccbmshop_group_user" sequence="2"/>
             <!-- <menuitem id="orbit_creditorder_menu" name="Commandes à credit" action="orbit.orbit_sale_creditorder" groups="orbit.creditorder_group_user" sequence="17"/> -->
         </menuitem>
 
