@@ -18,9 +18,9 @@
 
         <!-- Menu Stock Produits -->
         <menuitem id="orbit_menu_stock_products" name="Stock" sequence="9">
-            <menuitem id="orbit_menu_products" name="Products" action="stock.product_template_action_product" sequence="1"/>
-            <!-- <menuitem id="orbit_menu_stock" name="Stocks" action="stock.action_product_stock_view" sequence="2"/> -->
-            <menuitem id="orbit_menu_stock" name="Stocks" action="orbit.action_product_stock_prorder_view" sequence="2"/>
+            <menuitem id="orbit_menu_products" name="Products" action="orbit.action_product_temple_ccbmshop" sequence="1"/>
+            <menuitem id="orbit_menu_stock" name="Stocks" action="stock.action_product_stock_view" sequence="2"/>
+            <!-- <menuitem id="orbit_menu_stock" name="Stocks" action="orbit.action_product_stock_prorder_view" sequence="2"/> -->
         </menuitem>
 
         <!-- Menu Ventes -->

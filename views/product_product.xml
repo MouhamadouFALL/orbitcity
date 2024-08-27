@@ -6,13 +6,11 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <span class="d-inline-block">
-                
                     <field name="en_promo"/>
                     <label for="en_promo"/>
 
                     <field name="is_preorder"/>
                     <label for="is_preorder"/>
-
                 </span>
             </xpath>
             <xpath expr="//div[@name='pricing']" position="after">
@@ -73,33 +71,50 @@
 
     <!-- ************************************ View Tree ************************************ -->
     <record id="view_preorder_product_product_stock_tree" model="ir.ui.view">
-        <field name="name">product.product.stock.tree</field>
+        <field name="name">product.product.tree.inherited</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="stock.product_product_stock_tree"/>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
         <field name="arch" type="xml">
-            <field name="outgoing_qty" position="after">
-                <field name="preordered_qty" optional="show" sum="Total Preorder_qty"/>
-                <field name="ordered_qty" invisible="1" sum="Total Order_qty" />
+            <field name="type" position="after">
+                <field name="is_preorder" optional="hide" string="Preordered"/>
+                <field name="preordered_qty" string="Qty preordered" optional="show" sum="Total Preorder qty"/>
+                <field name="ordered_qty" string="Qty ordered" optional="hide" sum="Total Order qty" />
             </field>
         </field>
     </record>
 
-    
+    <!-- ************************************ Search view ********************************* -->
+    <record id="ccbmshop_product_search_form_view" model="ir.ui.view">
+        <field name="name">product.product.ccbmshop.search</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <!-- <field name="inherit_id" ref="product.product_search_form_view"/> -->
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <filter string="available for preorder" name="is_preorder" domain="[('is_preorder', '=', True)]"/>
+                <filter string="not available for preorder" name="is_preorder" domain="[('is_preorder', '=', False)]"/>
+            </field>
+        </field>
+    </record>
 
-
-        <record model="ir.actions.act_window" id="action_product_stock_prorder_view">
-        <field name="name">Stock</field>
+    <!-- ************************************ Action view ********************************* -->
+    <record model="ir.actions.act_window" id="action_product_temple_ccbmshop">
+        <field name="name">CCBMSHOP Products</field>
+        <field name="type">ir.actions.act_window</field>
         <field name="res_model">product.product</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_preorder_product_product_stock_tree"/>
-        <field name="search_view_id" ref="stock.product_search_form_view_stock_report"/>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="view_id" ref="product.product_template_kanban_view"/>
+        <field name="search_view_id" ref="orbit.ccbmshop_product_search_form_view"/>
         <field name="context">{'default_detailed_type': 'product'}</field>
-        <field name="domain">[('detailed_type', '=', 'product')]</field>
+        <!-- <field name="context">{"search_default_filter_to_sell":1, "sale_multi_pricelist_product_template": 1}</field> -->
+        <!-- <field name="domain">[('detailed_type', '=', 'product')]</field> -->
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No stock to show
             </p><p>
-                Create some storable products to see their stock info in this view.
+                You must define a product for everything you sell or purchase,
+                whether it's a storable product for CCBMSHOP.
             </p>
         </field>
     </record>
