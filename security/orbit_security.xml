@@ -9,12 +9,12 @@
 
     <!-- ### Groupes -->
     <record id="admin_group_user" model="res.groups">
-        <field name="name">Manager CCBMSHOP</field>
+        <field name="name">Manager</field>
         <field name="category_id" ref="orbit_groups"/>
         <field name="comment">The Admin of CCBMSHOP</field>
     </record>
     <record id="emp_group_user" model="res.groups">
-        <field name="name">User CCBMSHOP</field>
+        <field name="name">User</field>
         <field name="category_id" ref="orbit_groups"/>
         <field name="comment">The users of CCBMSHOP</field>
     </record>
@@ -24,23 +24,39 @@
         <field name="comment">The affiliates of CCBMSHOP</field>
         <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
     </record>
-    <record id="emp_group_commercial" model="res.groups">
-        <field name="name">Commercial</field>
+
+    <record id="com_group_user" model="res.groups">
+        <field name="name">Commerciaux</field>
         <field name="category_id" ref="orbit_groups"/>
         <field name="comment">Les Commerciaux</field>
         <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
     </record>
-    <record id="emp_group_caisse" model="res.groups">
-        <field name="name">Caissier</field>
+
+    <record id="caisse_group_user" model="res.groups">
+        <field name="name">Caissie</field>
         <field name="category_id" ref="orbit_groups"/>
         <field name="comment">Gestionnaire de caisse</field>
         <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
     </record>
 
     <record id="sale_ccbmshop_group_user" model="res.groups">
-        <field name="name">vendor</field>
+        <field name="name">Vendor</field>
         <field name="category_id" ref="orbit_groups"/>
         <field name="comment">Groupe gestionnaire de ventes</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="compta_ccbmshop_group_user" model="res.groups">
+        <field name="name">Compta</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe Compta</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="stock_ccbmshop_group_user" model="res.groups">
+        <field name="name">stock</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe Stock</field>
         <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
     </record>
 
