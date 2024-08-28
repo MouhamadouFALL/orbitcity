@@ -34,7 +34,7 @@ class TypeSale(models.TransientModel):
         selection = [
             ('order', "Commande"),
             ('preorder', "Precommande"),
-            ('creditorder', "Commande credit"),
+            # ('creditorder', "Commande credit"),
         ],
         string="Type", required=True)
 

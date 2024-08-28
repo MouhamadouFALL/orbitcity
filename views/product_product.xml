@@ -43,7 +43,7 @@
                         </group>
                     </group>
                 </page>
-                <page string="Price &amp; Quantity">
+                <page string="Quantities">
                     <group string="Price and Quantity">
                         
                         <group>
