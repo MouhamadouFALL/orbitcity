@@ -37,6 +37,7 @@ class ProductTemplate(models.Model):
     preordered_qty = fields.Float('Preordered Quantity', compute='_compute_preordered_qty', store=True, 
                                   help="Total quantity of products that have been preordered by customers but not yet delivered."
                                   )
+    
     ordered_qty = fields.Float('Ordered Quantity', compute='_compute_ordered_qty', store=True, 
                                   help="Total quantity of products that have been ordered by customers but not yet delivered."
                                   )
