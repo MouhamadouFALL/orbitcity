@@ -20,8 +20,10 @@
                 <field name="invoice_origin" string="Ref SO"/>
             </field> -->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="invoice_origin" string="Ref SO"/><label for="percentage_of_payment"/>
+                <field name="invoice_origin" string="Ref Order"/>
+                <label for="percentage_of_payment"/>
                 <div class="d-flex align-items-baseline">
+                    
                     <field name="percentage_of_payment" string="Acompte (%)" class="oe_inline" readonly="1"/>
                     <span>%</span>
                 </div>

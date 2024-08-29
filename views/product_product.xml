@@ -15,23 +15,25 @@
             </xpath>
             <xpath expr="//div[@name='pricing']" position="after">
 
-                <label for="preorder_price"/>
-                <div name="preorder_price">
+                <label for="preorder_price" attrs="{'invisible': [('is_preorder', '=', False)]}"/>
+                <div name="preorder_price" attrs="{'invisible': [('is_preorder', '=', False)]}">
                     <field name="preorder_price" class="oe_inline" widget='monetary' 
                         options="{'currency_field': 'currency_id', 'field_digits': True}" />
                 </div>
-                <label for="rate_price"/>
+                
+                <label for="rate_price" attrs="{'invisible': [('en_promo', '=', False)]}"/>
                 <div name="rate_price">
-                    <field name="rate_price" class="oe_inline" widget='float'/>
+                    <field name="rate_price" class="oe_inline" widget='float' attrs="{'invisible': [('en_promo', '=', False)]}"/>
                 </div>
-                <label for="promo_price"/>
+            
+                <label for="promo_price" attrs="{'invisible': [('en_promo', '=', False)]}"/>
                 <div name="promo_price">
-                    <field name="promo_price" class="oe_inline" widget='monetary'/>
+                    <field name="promo_price" class="oe_inline" widget='monetary' attrs="{'invisible': [('en_promo', '=', False)]}"/>
                 </div>
 
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
-                <page string="Preorder">
+                <page string="Preorder" invisible="1">
                     <group string="Preorder">
                         <group >
                             <field name="preorder_deadline" string="Dead Line preorder allowed"/>
@@ -44,8 +46,7 @@
                     </group>
                 </page>
                 <page string="Quantities">
-                    <group string="Price and Quantity">
-                        
+                    <group string="Quantities">
                         <group>
                             <field name="qty_available" string="Quantité disponible" readonly="1"/>
                             <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
@@ -57,12 +58,6 @@
                             <!-- <field name="outgoing_qty" string="Quantité total sortante" readonly="1"/> -->
                             <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/> -->
                         </group>
-                        
-                        <!-- <group>
-                            <field name="list_price" string="Price order" readonly="1"/>
-                            <field name="preorder_price" string="Price preorder" readonly="1"/>
-                            <field name="standard_price" string="Price purchase" readonly="1"/>
-                        </group> -->
                     </group>
                 </page>
             </xpath>

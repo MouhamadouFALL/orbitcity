@@ -44,8 +44,10 @@ class ProductTemplate(models.Model):
     @api.depends('rate_price')
     def _compute_promo_price(self):
         for prod in self:
-            if prod.list_price > 1.0:
-                prod.promo_price = prod.list_price * ((1 - prod.rate_price) / 100)
+            if prod.rate_price > 0.0 and prod.list_price > 1.0:
+                prod.promo_price = prod.list_price * (1 - (prod.rate_price / 100))
+            else:
+                prod.promo_price = prod.list_price
     
     @api.depends('qty_available', 'outgoing_qty')
     def _compute_preordered_qty(self):
@@ -84,15 +86,19 @@ class ProductTemplate(models.Model):
                 ('order_id.type_sale', '=', 'preorder')
                 # Assumant que 'preorder' est l'état d'une précommande
             ])
+
             preorder_lines_delivered = self.env['sale.order.line'].search([
                 ('product_id.product_tmpl_id', '=', product.id),
                 ('order_id.state', 'in', ['delivered']),
                 ('order_id.type_sale', '=', 'preorder')
                 # Assumant que 'preorder' est l'état d'une précommande
             ])
+
             # _logger.info(f"line sale ====> {preordered_lines} ")
             # Calculer la somme des quantités précommandées
+
             product.preordered_qty = sum(line.product_uom_qty for line in preordered_lines) - sum(line.qty_delivered for line in preorder_lines_delivered)
+            
             # preordered_qty_delivered = 0.0
             # preordered_qty_undelivered = 0.0
             # if preordered_lines:
