@@ -5,7 +5,7 @@ class Users(models.Model):
     _inherit = 'res.users'
 
     # for users web
-    is_web_user = fields.Boolean(string="User web ", default=True)
+    # is_web_user = fields.Boolean(string="User web ", default=True)
 
     @api.model_create_multi
     def create(self, vals_list):
