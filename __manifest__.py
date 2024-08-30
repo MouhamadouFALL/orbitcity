@@ -13,7 +13,7 @@
     'version': '16.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product', 'sale', 'sale_crm','crm', 'account', 'purchase', 'stock'],
+    'depends': ['base', 'product', 'sale', 'sale_crm','crm', 'account', 'purchase', 'stock', 'sale_stock'],
 
     # always loaded
     'data': [
