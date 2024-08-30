@@ -2,6 +2,7 @@
 
 from . import orbit_affiliate
 from . import res_partner
+from . import res_users
 from . import res_partner_bank
 
 from . import crm_lead

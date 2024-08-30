@@ -45,6 +45,21 @@
         </field>
     </record>
 
+    <!-- ************************************ Inherit Form view sale order for stock ************************************ -->
+    <record id="view_orbit_order_stock_form" model="ir.ui.view">
+        <field name="name">orbit.sale.order.inherited.stock.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+
+            <!-- ######################################### Sheet ######################################### -->
+            <button name="action_view_delivery" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            
+        </field>
+    </record>
+
     <!-- ************************************ View Search ************************************ -->
     <record id="view_sales_order_filter_orbit" model="ir.ui.view">
         <field name="name">sale.order.list.order</field>
