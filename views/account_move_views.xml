@@ -11,6 +11,21 @@
             <button name="action_register_payment" position="attributes">
                 <attribute name="groups">orbit.caisse_group_user</attribute>
             </button>
+            <button name="preview_invoice" position="attributes">
+                <attribute name="groups">orbit.caisse_group_user</attribute>
+            </button>
+            <button name="action_reverse" position="attributes">
+                <attribute name="groups">orbit.caisse_group_user</attribute>
+            </button>
+            <button name="button_cancel" position="attributes">
+                <attribute name="groups">orbit.caisse_group_user</attribute>
+            </button>
+            <button name="button_draft" position="attributes">
+                <attribute name="groups">orbit.caisse_group_user</attribute>
+            </button>
+            <button name="button_set_checked" position="attributes">
+                <attribute name="groups">orbit.caisse_group_user</attribute>
+            </button>
 
             <!-- <xpath expr="//button[@name='action_post'][1]" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', '!=', 'entry')]}</attribute>
