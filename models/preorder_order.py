@@ -18,14 +18,16 @@ class Preorder(models.Model):
     amount_residual = fields.Float(
         "Residual Amount",
         readonly=True,
+        compute_sudo=True,
         compute='_compute_advance_payment',
         digits=(16, 2),
         store=True
     )
-    amount_payed = fields.Float('Payed Amount', compute='_compute_advance_payment', digits=(16, 2), store=False)
+    amount_payed = fields.Float('Payed Amount', compute_sudo=True, compute='_compute_advance_payment', digits=(16, 2), store=False)
     payment_line_ids = fields.Many2many(
         "account.move.line",
         string="Payment move lines",
+        compute_sudo=True,
         compute="_compute_advance_payment",
         store=True,
     )
@@ -39,10 +41,11 @@ class Preorder(models.Model):
         readonly=True,
         copy=False,
         tracking=True,
+        compute_sudo=True,
         compute="_compute_advance_payment",
     )
 
-    payment_count = fields.Float(compute="_compute_advance_payment")
+    payment_count = fields.Float(compute_sudo=True, compute="_compute_advance_payment")
 
     first_payment_date = fields.Date("Date du Premier Paiement", compute='_compute_reminder_dates', store=True) # date confirmate date_order
     second_payment_date = fields.Date("Date du Deuxième Paiement", compute='_compute_reminder_dates', store=True) # un mois avant livraison

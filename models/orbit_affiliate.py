@@ -57,7 +57,7 @@ class Affiliate(models.Model):
 
     # Infos du contact principal
     main_contact = fields.Many2one('res.partner', string="Contact principal", readonly=False, domain=[('is_company', '=', False), ('is_main_contact', '=', True)])
-    mobile_main_contact = fields.Char("Mobile")
+    mobile_main_contact = fields.Char(string="Mobile Principal")
     email_main_contact = fields.Char("E-mail")
     function_main_contact = fields.Char("Fonction")
 

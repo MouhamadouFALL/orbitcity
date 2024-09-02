@@ -96,9 +96,6 @@ class SaleOrder(models.Model):
     @api.depends("amount_residual")
     def action_delivered(self):
         for order in self:
-            inv_amount_residual = sum(order.invoice_ids.mapped("amount_residual"))
-            _logger.info(f"Amount Residual ==> {inv_amount_residual}")
-            #inv_amount_total = sum(order.invoice_ids.mapped("amount_total"))
             if order.amount_residual <= 0:
                 order.write({
                     'state': 'to_delivered'

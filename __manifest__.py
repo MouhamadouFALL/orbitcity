@@ -34,6 +34,7 @@
         'views/sale_order_orbit_views.xml',
         'views/preorder_orbit_views.xml',
         'views/account_move_views.xml',
+        # 'views/stock_picking_views.xml',
 
         # ***************************** Menu ****************************
         'views/menu_views.xml',
