@@ -5,7 +5,7 @@ class Users(models.Model):
     _inherit = 'res.users'
 
     # for users web
-    # is_web_user = fields.Boolean(string="User web ", default=True)
+    # is_web_user = fields.Boolean(string="User web ", default=True, store=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -14,10 +14,10 @@ class Users(models.Model):
         internal_group = self.env.ref('base.group_user')  # Groupe "Internal User"
         public_group = self.env.ref('base.group_public')  # Groupe "Public"
 
-        for user in users:
+        # for user in users:
+        #     if user.is_web_user:
+        #         # Retirer l'utilisateur des autres types d'utilisateur
+        #         user.groups_id = [(3, internal_group.id), (3, public_group.id), (4, portal_group.id)]
 
-            # Retirer l'utilisateur des autres types d'utilisateurs
-            user.groups_id = [(3, internal_group.id), (3, public_group.id)]
-            user.groups_id = [(4, portal_group.id)]
-
+        users.groups_id = [(3, internal_group.id), (3, public_group.id), (4, portal_group.id)]
         return users
