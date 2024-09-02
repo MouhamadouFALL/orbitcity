@@ -7,12 +7,6 @@ _logger = logging.getLogger(__name__)
 class Users(models.Model):
     _inherit = 'res.users'
 
-<<<<<<< HEAD
-    # for users web
-    # is_web_user = fields.Boolean(string="User web ", default=True, store=True)
-
-=======
->>>>>>> 39f8bf4a495db61848c7a4687ba43950803f1846
     @api.model_create_multi
     def create(self, vals_list):
 
@@ -23,23 +17,13 @@ class Users(models.Model):
         portal_group = self.env.ref('base.group_portal')  # Identifier le groupe "Portal"
         internal_group = self.env.ref('base.group_user')  # Groupe "Internal User"
         public_group = self.env.ref('base.group_public')  # Groupe "Public"
-
-<<<<<<< HEAD
-        # for user in users:
-        #     if user.is_web_user:
-        #         # Retirer l'utilisateur des autres types d'utilisateur
-        #         user.groups_id = [(3, internal_group.id), (3, public_group.id), (4, portal_group.id)]
-
-        users.groups_id = [(3, internal_group.id), (3, public_group.id), (4, portal_group.id)]
-        return users
-=======
-        _logger.info(f" portal_group: {portal_group}, internal_group: {internal_group}, public_group: {public_group} .")
-
+        # _logger.info(f" portal_group: {portal_group}, internal_group: {internal_group}, public_group: {public_group} .")
         for usr in usrs:
             # Retirer l'utilisateur des autres types d'utilisateurs
-            usr.groups_id = [(3, internal_group.id), (3, public_group.id), (4, portal_group.id)]
+            usr.groups_id = [(3, internal_group.id), (3, portal_group.id), (4, public_group.id)]
 
         return usrs
+    
     def write(self, vals_list):
         """
         Else the menu will be still hidden even after removing from the list
@@ -72,5 +56,3 @@ class Users(models.Model):
     is_admin = fields.Boolean(string="Est Admin", compute=_get_is_admin)
     # for users web
     # is_web= fields.Boolean(string="User web ", default=True)
-    
->>>>>>> 39f8bf4a495db61848c7a4687ba43950803f1846
