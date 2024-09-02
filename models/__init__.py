@@ -4,6 +4,7 @@ from . import orbit_affiliate
 from . import res_partner
 from . import res_users
 from . import res_partner_bank
+from . import ir_ui_menu
 
 from . import crm_lead
 from . import sale_order

@@ -26,6 +26,8 @@
         'wizard/crm_type_sale_for_quotation_views.xml',
 
         # ***************************** Dossier views *******************
+        'views/res_users_views.xml',
+        'views/ir_ui_menu_views.xml',
         'views/res_partner_views.xml',
         'views/affiliate_views.xml',
         'views/product_product.xml',
@@ -40,6 +42,8 @@
     'demo': [
         # 'demo/demo.xml',
     ],
+    'license': 'LGPL-3',
     'application': True,
     'installable': True,
+    'auto_install': False,
 }

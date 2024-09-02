@@ -30,7 +30,8 @@
                     <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('type_sale', 'in', ['preorder', 'creditorder'])]}</attribute>
                 </xpath>
 
-                <xpath expr="//sheet/div[@class='oe_button_box']" position="inside">
+                <!-- <xpath expr="//sheet/div[@class='oe_button_box']" position="inside"> -->
+                <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="inside">
                     <button name="action_view_payments"
                         type="object"
                         class="oe_stat_button"
