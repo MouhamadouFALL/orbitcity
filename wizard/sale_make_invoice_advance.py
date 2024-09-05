@@ -51,6 +51,12 @@ class SaleAdvancePaymentInv(models.TransientModel):
     #
     # sale_ref = fields.Char(string="Ref SO")
 
+    @api.constrains('product_id')
+    def _check_down_payment_product_is_valid(self):
+        for wizard in self:
+            if wizard.count > 1 or not wizard.product_id:
+                continue
+
     def _create_invoices(self, sale_orders, dates=None, amounts=None):
         self.ensure_one()
 

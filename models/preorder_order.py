@@ -297,6 +297,7 @@ class Preorder(models.Model):
                 undelivered_produts = ", ".join(undelivered_lines.mapped('product_id.name'))
                 raise exceptions.ValidationError(_("Veuillez effectuer la livraison des produits non livrés : {0}".format(undelivered_produts)))
             else:
+               order._create_invoices()
                return order.write({'state': 'delivered'})
             
     def action_delivered_a(self):
