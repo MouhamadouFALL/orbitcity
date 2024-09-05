@@ -297,7 +297,7 @@ class Preorder(models.Model):
                 undelivered_produts = ", ".join(undelivered_lines.mapped('product_id.name'))
                 raise exceptions.ValidationError(_("Veuillez effectuer la livraison des produits non livrés : {0}".format(undelivered_produts)))
             else:
-               order._create_invoices()
+            #  order._create_invoices()
                return order.write({'state': 'delivered'})
             
     def action_delivered_a(self):
@@ -310,42 +310,43 @@ class Preorder(models.Model):
                return order.write({ 'state': 'delivered' })
             
 
-    # @api.depends('order_line.qty_delivered', 'order_line.product_uom_qty')
-    # def _compute_delivery_status(self):
+    # # @api.depends('order_line.qty_delivered', 'order_line.product_uom_qty')
+    # # def _compute_delivery_status(self):
+    # #     for order in self:
+    # #         if all(line.qty_delivered >= line.product_uom_qty for line in order.order_line):
+    # #             order.write({
+    # #                 'state': 'delivered'	
+    # #             })
+    # #         elif order.state == 'sale' and order.amount_residual <= 0:
+    # #             order.write({
+    # #                 'state': 'to_delivered'	
+    # #             })
+
+    # #         _logger.info(f" Valeur dans state ==>  {order.state}  type de la valeur ==> {type(order.state)}")
+    # #         _logger.info(f" Valeur dans amount_residual ==> {order.amount_residual} type de la valeur ==> {order.amount_total}")
+
+
+    # def create_invoice_from_order(self):
     #     for order in self:
-    #         if all(line.qty_delivered >= line.product_uom_qty for line in order.order_line):
-    #             order.write({
-    #                 'state': 'delivered'	
-    #             })
-    #         elif order.state == 'sale' and order.amount_residual <= 0:
-    #             order.write({
-    #                 'state': 'to_delivered'	
-    #             })
+    #         # Filtrer les lignes de commande qui ont des acomptes déjà facturés
+    #         down_payment_lines = order.order_line.filtered(lambda line: line.is_downpayment)
 
-    #         _logger.info(f" Valeur dans state ==>  {order.state}  type de la valeur ==> {type(order.state)}")
-    #         _logger.info(f" Valeur dans amount_residual ==> {order.amount_residual} type de la valeur ==> {order.amount_total}")
+    #         # Vérifier s'il y a des lignes facturables après avoir ignoré les lignes d'acompte
+    #         invoice_lines = order.order_line - down_payment_lines
 
+    #         if not invoice_lines:
+    #             raise exceptions.UserError(_("Il n'y a rien à facturer après avoir pris en compte les factures d'acompte déjà créées."))
 
-    def create_invoice_from_order(self):
-        for order in self:
-            # Filtrer les lignes de commande qui ont des acomptes déjà facturés
-            down_payment_lines = order.order_line.filtered(lambda line: line.is_downpayment)
+    #         # Créer la facture normale pour les lignes restantes
+    #         invoice_ids = order._create_invoices()
 
-            # Vérifier s'il y a des lignes facturables après avoir ignoré les lignes d'acompte
-            invoice_lines = order.order_line - down_payment_lines
-
-            if not invoice_lines:
-                raise exceptions.UserError(_("Il n'y a rien à facturer après avoir pris en compte les factures d'acompte déjà créées."))
-
-            # Créer la facture normale pour les lignes restantes
-            invoice_ids = order._create_invoices()
-
-            if invoice_ids:
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Customer Invoice',
-                    'res_model': 'account.move',
-                    'view_mode': 'form',
-                    'res_id': invoice_ids.id,
-                    'target': 'current',
-                }
+    #         if invoice_ids:
+    #             return {
+    #                 'type': 'ir.actions.act_window',
+    #                 'name': 'Customer Invoice',
+    #                 'res_model': 'account.move',
+    #                 'view_mode': 'form',
+    #                 'res_id': invoice_ids.id,
+    #                 'target': 'current',
+    #             }
+            
