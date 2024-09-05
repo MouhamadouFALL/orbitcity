@@ -33,7 +33,7 @@
                 sequence="2"
             />
             <menuitem id="orbit_menu_products" name="Products" 
-                action="orbit.action_product_temple_ccbmshop" 
+                action="sale.product_template_action" 
                 groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
                 sequence="3"
             />
