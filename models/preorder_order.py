@@ -266,11 +266,21 @@ class Preorder(models.Model):
             _logger.info(f"Status de paiements {order.check_invoices_paid()}")
             if order.type_sale == 'order':
                 if order.amount_residual <= 0:
+                    # date = fields.Datetime.now()
+                    # self._create_invoices(date).action_post()
+                    # self._create_invoices(date, final=True)
+                    # order.create_invoice_from_order()
+                    # lines = order.order_line.filtered(lambda l: l.invoice_lines.product_id.invoice_policy == 'delivery')
+                    # for i in lines:
+                    #     i.product_id.invoice_policy.write({'invoice_policy': 'order'})
                     return order.write({ 'state': 'to_delivered' })  
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
             if order.type_sale == 'preorder':
                 if order.amount_residual <= 0 and order.advance_payment_status == 'paid':
+                    # date = fields.Datetime.now()
+                    # self._create_invoices(date).action_post()
+                    # self._create_invoices(date)
                     return order.write({ 'state': 'to_delivered' })
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
@@ -323,3 +333,28 @@ class Preorder(models.Model):
 
     #         _logger.info(f" Valeur dans state ==>  {order.state}  type de la valeur ==> {type(order.state)}")
     #         _logger.info(f" Valeur dans amount_residual ==> {order.amount_residual} type de la valeur ==> {order.amount_total}")
+
+
+    def create_invoice_from_order(self):
+        for order in self:
+            # Filtrer les lignes de commande qui ont des acomptes déjà facturés
+            down_payment_lines = order.order_line.filtered(lambda line: line.is_downpayment)
+
+            # Vérifier s'il y a des lignes facturables après avoir ignoré les lignes d'acompte
+            invoice_lines = order.order_line - down_payment_lines
+
+            if not invoice_lines:
+                raise exceptions.UserError(_("Il n'y a rien à facturer après avoir pris en compte les factures d'acompte déjà créées."))
+
+            # Créer la facture normale pour les lignes restantes
+            invoice_ids = order._create_invoices()
+
+            if invoice_ids:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Customer Invoice',
+                    'res_model': 'account.move',
+                    'view_mode': 'form',
+                    'res_id': invoice_ids.id,
+                    'target': 'current',
+                }

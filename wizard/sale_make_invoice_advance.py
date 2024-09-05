@@ -3,6 +3,7 @@
 
 from odoo import api, models, fields, _
 from odoo.fields import Command
+from odoo.exceptions import UserError
 
 
 # TYPE_INVOICE = [
@@ -51,11 +52,34 @@ class SaleAdvancePaymentInv(models.TransientModel):
     #
     # sale_ref = fields.Char(string="Ref SO")
 
+    @api.constrains('product_id')
+    def _check_down_payment_product_is_valid(self):
+        for wizard in self:
+            if wizard.count > 1 or not wizard.product_id:
+                continue
+
+            # Condition supplémentaire : vérifier que la politique de facturation est dans ['order', 'delivery']
+            if wizard.product_id.invoice_policy not in ['order', 'delivery']:
+                raise UserError(_(
+                    "The product used to invoice a down payment should have an invoice policy"
+                    " set to either 'Ordered quantities' or 'Delivered quantities'."
+                    " Please update your deposit product to be able to create a deposit invoice."))
+
+            # Vérification du type de produit pour être un 'service'
+            if wizard.product_id.type != 'service':
+                raise UserError(_(
+                    "The product used to invoice a down payment should be of type 'Service'."
+                    " Please use another product or update this product."))
+
     def _create_invoices(self, sale_orders, dates=None, amounts=None):
         self.ensure_one()
 
+        
         if self.advance_payment_method == 'delivered':
-            return sale_orders._create_invoices(final=self.deduct_down_payments)
+            sale_orders.write({'state': 'sale'})
+            res = sale_orders._create_invoices(final=self.deduct_down_payments)
+            sale_orders.write({'state': 'to_delivered'})
+            return res
         else:
             self.sale_order_ids.ensure_one()
             self = self.with_company(self.company_id)

@@ -23,7 +23,7 @@
             </field>
 
             <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
-                <attribute name="string">Invoice</attribute>
+                <attribute name="string">Facturer</attribute>
                 <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', 'not in', ['sale', 'to_delivered', 'to_delivered'])]}</attribute>
             </xpath>
 
@@ -103,7 +103,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="orbit_sale_order">
-        <field name="name">Orders</field>
+        <field name="name">Commandes</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,graph,pivot,calendar,activity</field>
         <field name="search_view_id" ref="orbit.view_sales_order_filter_orbit"/>
