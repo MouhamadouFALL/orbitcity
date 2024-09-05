@@ -266,21 +266,11 @@ class Preorder(models.Model):
             _logger.info(f"Status de paiements {order.check_invoices_paid()}")
             if order.type_sale == 'order':
                 if order.amount_residual <= 0:
-                    # date = fields.Datetime.now()
-                    # self._create_invoices(date).action_post()
-                    # self._create_invoices(date, final=True)
-                    # order.create_invoice_from_order()
-                    # lines = order.order_line.filtered(lambda l: l.invoice_lines.product_id.invoice_policy == 'delivery')
-                    # for i in lines:
-                    #     i.product_id.invoice_policy.write({'invoice_policy': 'order'})
                     return order.write({ 'state': 'to_delivered' })  
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
             if order.type_sale == 'preorder':
                 if order.amount_residual <= 0 and order.advance_payment_status == 'paid':
-                    # date = fields.Datetime.now()
-                    # self._create_invoices(date).action_post()
-                    # self._create_invoices(date)
                     return order.write({ 'state': 'to_delivered' })
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))

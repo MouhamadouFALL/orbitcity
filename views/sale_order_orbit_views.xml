@@ -24,9 +24,18 @@
 
             <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
                 <attribute name="string">Facturer</attribute>
-                <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', 'not in', ['sale', 'to_delivered', 'to_delivered'])]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', 'not in', ['sale', 'to_delivered',])]}</attribute>
             </xpath>
 
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="string">Annuler</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder']), '|', ('state', 'not in', ['draft', 'sent', 'sale', 'to_delivered']), ('id', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="string">Retour Devis</attribute>
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'delivered'])]}</attribute>
+            </xpath>
 
             <!-- ######################################### Sheet ######################################### -->
             <field name="partner_id" position="before">
