@@ -33,8 +33,8 @@
             </xpath>
 
             <xpath expr="//button[@name='action_draft']" position="attributes">
-                <attribute name="string">Retour Devis</attribute>
-                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'delivered'])]}</attribute>
+                <attribute name="string">Retour en Devis</attribute>
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'to_delivered', 'delivered'])]}</attribute>
             </xpath>
 
             <!-- ######################################### Sheet ######################################### -->

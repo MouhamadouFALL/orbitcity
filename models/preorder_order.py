@@ -13,7 +13,6 @@ class Preorder(models.Model):
     _description = 'Preorder Order'
     _inherit = 'sale.order'
 
-    # commitment_date >> date de livraison prevue
     account_payment_ids = fields.One2many('account.payment', 'sale_id', string="Pay sale advanced", readonly=True)
     amount_residual = fields.Float(
         "Residual Amount",
