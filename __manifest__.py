@@ -10,7 +10,7 @@
     'license': "AGPL-3",
     'website': "https://ccbme.sn",
     'category': 'CCBM/',
-    'version': '16.0.0',
+    'version': '16.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'product', 'sale', 'sale_crm','crm', 'account', 'purchase', 'stock', 'sale_stock'],
