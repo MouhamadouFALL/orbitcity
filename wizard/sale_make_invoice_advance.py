@@ -1,5 +1,4 @@
 #-*- encoding: utf-8 -*-
-
 from odoo import api, models, fields, _
 from odoo.fields import Command
 from odoo.exceptions import UserError
