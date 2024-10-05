@@ -7,6 +7,9 @@ _logger = logging.getLogger(__name__)
 class Users(models.Model):
     _inherit = 'res.users'
 
+    signature = fields.Binary(string="Signature", attachment=True)
+
+    
     @api.model_create_multi
     def create(self, vals_list):
 

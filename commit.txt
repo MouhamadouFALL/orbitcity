@@ -1,0 +1,5 @@
+Ajout du champ attachment_id dans le module orbit et modification de la gestion des signatures utilisateurs
+
+- Ajout d'un champ 'attachment_id' dans le module orbit pour la gestion des pièces jointes.
+- Personnalisation de l'affichage de la signature de l'utilisateur dans le rapport d'achat.
+- Intégration de la signature de l'utilisateur dans la vue formulaire des utilisateurs (base.view_users_form).

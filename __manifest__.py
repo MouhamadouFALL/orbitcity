@@ -26,6 +26,7 @@
         'wizard/crm_type_sale_for_quotation_views.xml',
 
         # ***************************** Dossier views *******************
+        'views/orbit_purchase_order.xml',
         'views/res_users_views.xml',
         'views/ir_ui_menu_views.xml',
         'views/res_partner_views.xml',
@@ -35,8 +36,7 @@
         'views/preorder_orbit_views.xml',
         'views/account_move_views.xml',
         'views/crm_lead_views.xml',
-        # 'views/orbit_account_payment_view.xml',
-        # 'views/stock_picking_views.xml',
+        'report/orbit_purchase_order_template.xml',
 
         # ***************************** Menu ****************************
         'views/menu_views.xml',

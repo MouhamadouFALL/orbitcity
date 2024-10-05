@@ -11,6 +11,7 @@ from . import sale_order
 from . import preorder_order
 from . import sale_order_line
 from . import product_product
+from . import purchase_order
 
 from . import account_move
 from . import account_payment

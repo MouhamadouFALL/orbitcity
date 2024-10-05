@@ -11,11 +11,24 @@
                     <field name="is_admin" invisible="1"/>
                 </field>
                 <xpath expr="//notebook" position="inside">
+
+                    <!-- Placer la signature juste après l'email -->
+                    <page string="Signature">
+                        <!-- <group>
+                            <p>Veuillez télécharger une signature en format image (PNG ou JPG).</p>
+                        </group> -->
+                        <group>
+                            <label for="signature" string="Signature"/>
+                            <field name="signature" widget="image" nolabel="1" options="{'preview_image': 'signature'}" />
+                        </group>
+                    </page>
+
                     <page string="Hide Menu" attrs="{'invisible': [('is_admin', '=', True)]}">
                         <tree>
                             <field name="hide_menu_ids"/>
                         </tree>
                     </page>
+
                 </xpath>
             </field>
         </record>
