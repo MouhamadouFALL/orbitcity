@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_orbit_purchase_order_document_inherit" inherit_id="purchase.report_purchaseorder_document">
-        <!-- Ajouter la signature de l'utilisateur à la fin du rapport -->
+        
         <xpath expr="//div[@class='page']" position="replace">
 
             <div class="oe_structure"/>
@@ -14,15 +14,15 @@
 
             <div id="informations" class="row mt-4 mb32">
                 <div t-if="o.user_id" class="col-3 bm-2">
-                    <strong>Purchase Representative</strong>
+                    <strong>Responsable des achats:</strong>
                     <p t-field="o.user_id" class="m-0"/>
                 </div>
                 <div t-if="o.partner_ref" class="col-3 bm-2">
-                    <strong>Your Order Reference:</strong>
+                    <strong>Reference:</strong>
                     <p t-field="o.partner_ref" class="m-0"/>
                 </div>
                 <div t-if="o.state in ['purchase','done'] and o.date_approve" class="col-3 bm-2">
-                    <strong>Order Date</strong>
+                    <strong>Date de la commande</strong>
                     <p t-field="o.date_approve" class="m-0"/>
                 </div>
                 <div t-elif="o.date_order" class="col-3 bm-2">
@@ -36,10 +36,10 @@
                     <tr>
                         <th name="th_description"><strong>Description</strong></th>
                         <th name="th_taxes"><strong>Taxes</strong></th>
-                        <th name="th_date_req" class="text-center"><strong>Date Req.</strong></th>
-                        <th name="th_quantity" class="text-end"><strong>Qty</strong></th>
-                        <th name="th_price_unit" class="text-end"><strong>Unit Price</strong></th>
-                        <th name="th_amount" class="text-end"><strong>Amount</strong></th>
+                        <th name="th_date_req" class="text-center"><strong>Date de la demande</strong></th>
+                        <th name="th_quantity" class="text-end"><strong>Qté</strong></th>
+                        <th name="th_price_unit" class="text-end"><strong>Prix unitaire</strong></th>
+                        <th name="th_amount" class="text-end"><strong>Montant</strong></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,13 +112,20 @@
 
             <p t-field="o.notes" class="mt-4"/>
             <div class="oe_structure"/>
+            <div class="oe_structure"/>
+            <div class="oe_structure"/>
+            <div class="oe_structure"/>
 
-            <div class="signature" style="margin-top: 30px;">
-                <p><strong>Signature :</strong></p>
-                <img t-att-src="'/web/image/res.users/%d/signature' % (o.user_id.id)" 
-                     style="max-height: 100px;" alt="Signature" />
-                <p><span t-field="o.user_id.name"/></p>
-            </div>
+            <!-- Ajouter la signature de l'utilisateur à la fin du rapport -->
+            <div class="row mt-5" >
+                    <div class="col-12">
+                        <div class="float-end text-end mt-4" >
+                            <p><strong>Signature :</strong></p>
+                            <img t-att-src="'/web/image/res.users/%d/signature' % (o.user_id.id)" 
+                                 style="max-height: 100px;" alt="Signature" />
+                        </div>
+                    </div>
+                </div>
 
         </xpath>
     </template>
