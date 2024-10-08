@@ -8,7 +8,7 @@
 
             <div class="mt-4">
                 <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation : <span t-field="o.name"/></h2>
-                <h2 t-if="o.state in ['purchase', 'done']">Purchase Order : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['purchase', 'done']">Bon de commande : <span t-field="o.name"/></h2>
                 <h2 t-if="o.state == 'cancel'">Cancelled Purchase Order : <span t-field="o.name"/></h2>
             </div>
 
@@ -123,6 +123,9 @@
                             <p><strong>Signature :</strong></p>
                             <img t-att-src="'/web/image/res.users/%d/signature' % (o.user_id.id)" 
                                  style="max-height: 100px;" alt="Signature" />
+                            
+                            <!-- <img t-att-src="'/web/image/res.users/%d/signature' % (o.user_id.id)" 
+                                 style="max-width: 100%; height: auto; display: block; margin-top: 10px;" alt="Signature" /> -->
                         </div>
                     </div>
                 </div>

@@ -13,13 +13,13 @@
                 <xpath expr="//notebook" position="inside">
 
                     <!-- Placer la signature juste après l'email -->
-                    <page string="Signature">
+                    <page string="Signature perso">
                         <!-- <group>
                             <p>Veuillez télécharger une signature en format image (PNG ou JPG).</p>
                         </group> -->
                         <group>
-                            <label for="signature" string="Signature"/>
-                            <field name="signature" widget="image" nolabel="1" options="{'preview_image': 'signature'}" />
+                            <label for="signature_perso" string="Signature perso"/>
+                            <field name="signature_perso" widget="image" nolabel="1" options="{'preview_image': 'signature_perso'}" />
                         </group>
                     </page>
 

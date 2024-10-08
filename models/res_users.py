@@ -7,9 +7,9 @@ _logger = logging.getLogger(__name__)
 class Users(models.Model):
     _inherit = 'res.users'
 
-    signature = fields.Binary(string="Signature", attachment=True)
+    signature_perso = fields.Binary(string="Signature", attachment=True)
 
-    
+
     @api.model_create_multi
     def create(self, vals_list):
 
@@ -26,6 +26,16 @@ class Users(models.Model):
             usr.groups_id = [(3, internal_group.id), (3, portal_group.id), (4, public_group.id)]
 
         return usrs
+    
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super(Users, self).fields_get(allfields, attributes)
+        if not self.env.user.has_group('base.group_system'):  # Groupe de Managers
+            if 'signature_perso' in res:
+                res['signature_perso']['readonly'] = True
+            if self.env.user == self:
+                res['signature_perso']['readonly'] = False  # L'utilisateur peut modifier sa propre signature
+        return res
     
     def write(self, vals_list):
         """
