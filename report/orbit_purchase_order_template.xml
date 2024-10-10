@@ -123,9 +123,7 @@
                             <p><strong>Signature :</strong></p>
                             <img t-att-src="'/web/image/res.users/%d/signature_perso' % (o.user_id.id)" 
                                  style="max-height: 100px;" alt="Signature" />
-                            
-                            <!-- <img t-att-src="'/web/image/res.users/%d/signature' % (o.user_id.id)" 
-                                 style="max-width: 100%; height: auto; display: block; margin-top: 10px;" alt="Signature" /> -->
+            
                         </div>
                     </div>
                 </div>

@@ -7,4 +7,3 @@ class PurchaseOrder(models.Model):
 
     attachment_ids = fields.Many2many('ir.attachment', 'orbit_attachment_rel', 'orbit_id', 'attachment_id', string="Pieces jointes", store=True, help="Attach files related to this order")
 
-
