@@ -120,7 +120,7 @@
             <div class="row mt-5" >
                     <div class="col-12">
                         <div class="float-end text-end mt-4" >
-                            <p><strong>Signature Personnelle:</strong></p>
+                            <p><strong>Signature: </strong></p>
                                 <t t-if="o.user_id.signature_perso">
                                     <img t-att-src="'/web/image/res.users/%s/signature_perso' % (o.user_id.id)" 
                                         style="max-height: 100px;" alt="Signature Personnelle" />
