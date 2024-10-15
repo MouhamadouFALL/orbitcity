@@ -7,9 +7,9 @@
             <div class="oe_structure"/>
 
             <div class="mt-4">
-                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Proforma : <span t-field="o.name"/></h2>
-                <h2 t-if="o.state in ['purchase', 'done']">Bon de commande : <span t-field="o.name"/></h2>
-                <h2 t-if="o.state == 'cancel'">Proforma annulé : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Proforma: <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['purchase', 'done']">Bon de commande: <span t-field="o.name"/></h2>
+                <h2 t-if="o.state == 'cancel'">Proforma annulé: <span t-field="o.name"/></h2>
             </div>
 
             <div id="informations" class="row mt-4 mb32">
@@ -22,11 +22,11 @@
                     <p t-field="o.partner_ref" class="m-0"/>
                 </div>
                 <div t-if="o.state in ['purchase','done'] and o.date_approve" class="col-3 bm-2">
-                    <strong>Date de la commande</strong>
+                    <strong>Date de la commande:</strong>
                     <p t-field="o.date_approve" class="m-0"/>
                 </div>
                 <div t-elif="o.date_order" class="col-3 bm-2">
-                    <strong >Order Deadline:</strong>
+                    <strong >Date d'expiration:</strong>
                     <p t-field="o.date_order" class="m-0"/>
                 </div>
             </div>
