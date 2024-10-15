@@ -7,9 +7,9 @@
             <div class="oe_structure"/>
 
             <div class="mt-4">
-                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Proforma : <span t-field="o.name"/></h2>
                 <h2 t-if="o.state in ['purchase', 'done']">Bon de commande : <span t-field="o.name"/></h2>
-                <h2 t-if="o.state == 'cancel'">Cancelled Purchase Order : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state == 'cancel'">Proforma annulé : <span t-field="o.name"/></h2>
             </div>
 
             <div id="informations" class="row mt-4 mb32">
@@ -117,21 +117,20 @@
             <div class="oe_structure"/>
 
             <!-- Ajouter la signature de l'utilisateur à la fin du rapport -->
-            <div class="row mt-5" >
+            
+                <div class="row mt-5" >
                     <div class="col-12">
                         <div class="float-end text-end mt-4" >
-                            <p><strong>Signature: </strong></p>
-                                <t t-if="o.user_id.signature_perso">
-                                    <img t-att-src="'/web/image/res.users/%s/signature_perso' % (o.user_id.id)" 
+                            <t t-if="o.state=='purchase' and o.usr_confirmed">
+                                <p><strong>Signature: </strong></p>
+                                <t t-if="o.usr_confirmed.signature_perso">
+                                    <img t-att-src="'/web/image/res.users/%s/signature_perso' % (o.usr_confirmed.id)" 
                                         style="max-height: 100px;" alt="Signature Personnelle" />
                                 </t>
-                                <t t-else="">
-                                    <p></p>
-                                </t>
+                            </t>
                         </div>
                     </div>
                 </div>
-
         </xpath>
     </template>
 </odoo>

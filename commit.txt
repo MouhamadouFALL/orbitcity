@@ -1,5 +1,5 @@
-Modification de la signature personnelle de l'utilisateur
+purchase_order: Mise à jour de la méthode `button_confirm` pour associer la signature de l'utilisateur connecté
 
-- Ajout d'une règle permettant à l'utilisateur connecté de modifier uniquement sa propre signature.
-- Seuls les managers peuvent modifier toutes les signatures.
-- Règle de sécurité appliquée pour restreindre l'accès à la signature aux enregistrements des utilisateurs eux-mêmes. ce code est en commentaire dans le fichier de securité
+- Ajout de la logique permettant d'enregistrer la signature de l'utilisateur qui confirme le bon d'achat
+
+
