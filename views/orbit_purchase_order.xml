@@ -34,7 +34,7 @@
         <menuitem
             id="orbit_purchase_order_menu"
             name="Achats"
-            groups="orbit.admin_group_user"
+            groups="orbit.stock_ccbmshop_group_user"
             action="purchase.purchase_rfq"
             sequence="3"/>
     </menuitem>
