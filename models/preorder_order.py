@@ -46,9 +46,9 @@ class Preorder(models.Model):
 
     payment_count = fields.Float(compute_sudo=True, compute="_compute_advance_payment")
 
-    first_payment_date = fields.Date("Date du Premier Paiement", compute='_compute_reminder_dates', store=True) # date confirmate date_order
-    second_payment_date = fields.Date("Date du Deuxième Paiement", compute='_compute_reminder_dates', store=True) # un mois avant livraison
-    third_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', store=True) # date livraison commitment_date
+    first_payment_date = fields.Date("Date du Premier Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date confirmate date_order
+    second_payment_date = fields.Date("Date du Deuxième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # un mois avant livraison
+    third_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date livraison commitment_date
 
     first_payment_amount = fields.Float("1er amount", compute="_compute_order_data", digits=(16, 2), store=True) 
     second_payment_amount = fields.Float("2nd amount", compute="_compute_order_data", digits=(16, 2), store=True) 

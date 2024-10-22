@@ -47,6 +47,15 @@
             <!-- <menuitem id="orbit_creditorder_menu" name="Commandes à credit" action="orbit.orbit_sale_creditorder" groups="orbit.creditorder_group_user" sequence="17"/> -->
         </menuitem>
 
+        <!-- Menu Achats -->
+        <menuitem id="orbit_provisions_menu" name="Provisions" sequence="12">
+            <menuitem id="orbit_purchase_order_menu"
+                name="Achats"
+                groups="orbit.stock_ccbmshop_group_user"
+                action="purchase.purchase_rfq"
+                sequence="3"/>
+        </menuitem>
+
         <!-- Menu Programme Partenaire -->
         <menuitem id="orbit_affiliate_Partner" name="Programme Partenaire" sequence="13">
             <menuitem id="orbit_person" name="Clients" action="orbit.orbit_partner_indiv" sequence="1"/>

@@ -75,9 +75,9 @@
                           attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
                         <group string="Dates and Amounts">
                             <group>
-                                <field name="first_payment_date" string="1st due date" readonly="1"/>
-                                <field name="second_payment_date" string="2nd due date" readonly="1"/>
-                                <field name="third_payment_date" string="3rd due date" readonly="1"/>
+                                <field name="first_payment_date" string="1st due date"/>
+                                <field name="second_payment_date" string="2nd due date"/>
+                                <field name="third_payment_date" string="3rd due date"/>
                             </group>
                             <group>
                                 <field name="first_payment_amount" string="1er amount" readonly="1"/>
