@@ -220,10 +220,14 @@ class Preorder(models.Model):
         res = super(Preorder, self).action_confirm()
         
         for order in self:
+            
             if order.amount_residual <= 0:
                 order.write({
                     'state': 'to_delivered'	
                 })
+            
+            # Enregistre l'utilisateur connecté
+            order.usr_confirmed = self.env.user
 
         if self.type_sale == 'order':
             # date = fields.Datetime.now()
@@ -236,6 +240,7 @@ class Preorder(models.Model):
             amounts = [self.first_payment_amount, self.second_payment_amount, self.third_payment_amount]
             self._create_advance_invoices(dates, amounts)
             self.message_post(body="La commande a été confirmée avec succès.")
+
             return res
         
     # @api.onchange('amount_residual')

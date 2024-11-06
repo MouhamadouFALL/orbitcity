@@ -85,6 +85,8 @@ class SaleOrder(models.Model):
         copy=False, index=True,
         tracking=3, default='draft')
 
+    usr_confirmed = fields.Many2one('res.users', string="Confirmé par", readonly=True)
+    
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

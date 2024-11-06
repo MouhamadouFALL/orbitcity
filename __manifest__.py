@@ -37,6 +37,7 @@
         'views/account_move_views.xml',
         'views/crm_lead_views.xml',
         'report/orbit_purchase_order_template.xml',
+        'report/orbit_sale_order_template.xml',
 
         # ***************************** Menu ****************************
         'views/menu_views.xml',
