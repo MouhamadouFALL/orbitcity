@@ -112,25 +112,32 @@
 
             <p t-field="o.notes" class="mt-4"/>
             <div class="oe_structure"/>
-            <div class="oe_structure"/>
-            <div class="oe_structure"/>
-            <div class="oe_structure"/>
 
             <!-- Ajouter la signature de l'utilisateur à la fin du rapport -->
-            
-                <div class="row mt-5" >
-                    <div class="col-12">
-                        <div class="float-end text-end mt-4" >
-                            <t t-if="o.state=='purchase' and o.usr_confirmed">
-                                <p><strong>Signature: </strong></p>
+            <t t-if="o.state=='purchase' and o.usr_confirmed">
+                <div class="footer-signature" style="margin-top: 50px;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left;">
+                                <p><strong>Signature du Responsable</strong></p>
                                 <t t-if="o.usr_confirmed.signature_perso">
-                                    <img t-att-src="'/web/image/res.users/%s/signature_perso' % (o.usr_confirmed.id)" 
-                                        style="max-height: 100px;" alt="Signature Personnelle" />
+                                    <div>
+                                        <img t-att-src="image_data_uri(o.usr_confirmed.signature_perso)" style="max-height: 4cm; max-width: 8cm;"/>
+                                    </div>
                                 </t>
-                            </t>
-                        </div>
-                    </div>
+                                <t t-else="">
+                                    <p>______________________________</p>
+                                </t>
+                            </td>
+                            <td style="text-align: right;">
+                                <p><strong>Date:</strong> <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/></p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+            </t>
+    
+
         </xpath>
     </template>
 </odoo>

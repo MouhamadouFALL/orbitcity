@@ -18,22 +18,22 @@
 
             <div class="row mt-4 mb-4" id="informations">
                 <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2" name="informations_reference">
-                    <strong>Reference:</strong>
+                    <strong>Reference: </strong>
                     <p class="m-0" t-field="doc.client_order_ref"/>
                 </div>
                 <div t-if="doc.date_order" class="col-auto col-3 mw-100 mb-2" name="informations_date">
-                    <strong t-if="doc.state in ['draft', 'sent']">Date Devis:</strong>
-                    <strong t-else="">Date Commande:</strong>
+                    <strong t-if="doc.state in ['draft', 'sent']">Date Devis: </strong>
+                    <strong t-else="">Date Commande: </strong>
                     <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
                 </div>
                 <div t-if="doc.validity_date and doc.state in ['draft', 'sent']"
                     class="col-auto col-3 mw-100 mb-2"
                     name="expiration_date">
-                    <strong>Expiration:</strong>
+                    <strong>Expiration: </strong>
                     <p class="m-0" t-field="doc.validity_date"/>
                 </div>
                 <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Vendeur:</strong>
+                    <strong>Vendeur: </strong>
                     <p class="m-0" t-field="doc.user_id"/>
                 </div>
             </div>
@@ -131,42 +131,45 @@
                 </div>
             </div>
 
-            <!-- <p t-field="doc.notes" class="mt-4"/> -->
-            <div class="oe_structure"/>
-            <div class="oe_structure"/>
-            <div class="oe_structure"/>
             <div class="oe_structure"/>
 
-            <!-- Ajouter la signature de l'utilisateur à la fin du rapport -->
+            <!-- Ajouter la signature de l'utilisateur qui a confirmer la commande -->
+            <div t-if="doc.signature" class="mt-4 ml64 mr4" name="signature">
+                <div class="offset-8">
+                    <strong>Signature</strong>
+                </div>
+                <div class="offset-8">
+                    <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="offset-8 text-center">
+                    <p t-field="doc.signed_by"/>
+                </div>
+            </div>
+            <div t-else="" >
+                <div class="footer-signature" style="margin-top: 50px;">
+                    <t t-if="doc.state=='sale' and doc.usr_confirmed">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: left;">
+                                    <p><strong>Signature du Responsable</strong></p>
+                                    <t t-if="doc.usr_confirmed.signature_perso">
+                                        <div>
+                                            <img t-att-src="image_data_uri(doc.usr_confirmed.signature_perso)" style="max-height: 4cm; max-width: 8cm;"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <p>______________________________</p>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <p><strong>Date:</strong> <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                </div>
+            </div>
             
-            <!-- <div class="row mt-5" >
-                <div class="col-12">
-                    <div class="float-end text-end mt-4" >
-                        <t t-if="o.state=='purchase' and o.usr_confirmed">
-                            <p><strong>Signature: </strong></p>
-                            <t t-if="o.usr_confirmed.signature_perso">
-                                <img t-att-src="'/web/image/res.users/%s/signature_perso' % (o.usr_confirmed.id)" 
-                                    style="max-height: 100px;" alt="Signature Personnelle" />
-                            </t>
-                        </t>
-                    </div>
-                </div>
-            </div> -->
-
-            <t t-if="doc.state=='sale' and doc.usr_confirmed">
-
-                <div t-if="doc.signature" class="mt-4 ml64 mr4" name="signature">
-                    <div class="offset-8">
-                        <strong>Signature</strong>
-                    </div>
-                    <div class="offset-8">
-                        <img t-att-src="image_data_uri(doc.user_id.signature_perso)" style="max-height: 4cm; max-width: 8cm;"/>
-                    </div>
-                    <div class="offset-8 text-center">
-                        <p t-field="doc.signed_by"/>
-                    </div>
-                </div>
-            </t>
             <div>
                 <p t-field="doc.note" name="order_note"/>
                 <p t-if="not is_html_empty(doc.payment_term_id.note)">
