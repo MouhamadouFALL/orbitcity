@@ -70,7 +70,10 @@
 
                         <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
                             <t t-if="not line.display_type">
-                                <td name="td_name"><span t-field="line.product_id.name"/></td>
+                                <td name="td_name">
+                                    <!-- <span t-field="line.name"/> -->
+                                    <span t-field="line.product_id.name"/>
+                                </td>
                                 <td name="td_quantity" class="text-end">
                                     <span t-field="line.product_uom_qty"/>
                                     <span t-field="line.product_uom"/>
@@ -148,7 +151,7 @@
             <div t-else="" >
                 <div class="footer-signature" style="margin-top: 50px;">
                     <t t-if="doc.state=='sale' and doc.usr_confirmed">
-                        <table style="width: 100%;">
+                        <table class="table table-sm table-borderless mt-4" style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;">
                                     <p><strong>Signature du Responsable</strong></p>
