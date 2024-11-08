@@ -7,9 +7,9 @@
             <div class="oe_structure"/>
 
             <div class="mt-4">
-                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Proforma: <span t-field="o.name"/></h2>
-                <h2 t-if="o.state in ['purchase', 'done']">Bon de commande: <span t-field="o.name"/></h2>
-                <h2 t-if="o.state == 'cancel'">Proforma annulé: <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['draft', 'sent', 'to approve']">Proforma : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state in ['purchase', 'done']">Bon de commande : <span t-field="o.name"/></h2>
+                <h2 t-if="o.state == 'cancel'">Proforma annulé : <span t-field="o.name"/></h2>
             </div>
 
             <div id="informations" class="row mt-4 mb32">

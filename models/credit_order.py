@@ -48,18 +48,15 @@ class Preorder(models.Model):
 
     first_payment_date = fields.Date("Date du Premier Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date confirmate date_order
     second_payment_date = fields.Date("Date du Deuxième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # un mois avant livraison
-    third_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) 
-    fourth_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date livraison commitment_date
+    third_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date livraison commitment_date
 
     first_payment_amount = fields.Float("1er amount", compute="_compute_order_data", digits=(16, 2), store=True) 
     second_payment_amount = fields.Float("2nd amount", compute="_compute_order_data", digits=(16, 2), store=True) 
     third_payment_amount = fields.Float("3rd amount", compute="_compute_order_data", digits=(16, 2), store=True)
-    fourth_payment_amount = fields.Float("3rd amount", compute="_compute_order_data", digits=(16, 2), store=True)
 
     first_payment_state = fields.Boolean(string="1er Payment status", compute='_compute_order_data', default=False, store=True)
     second_payment_state = fields.Boolean(string="2nd Payment status", compute='_compute_order_data', default=False, store=True)
     third_payment_state = fields.Boolean(string="3rd Payment status", compute='_compute_order_data', default=False, store=True)
-    fourth_payment_state = fields.Boolean(string="3rd Payment status", compute='_compute_order_data', default=False, store=True)
 
     invoices = fields.One2many('account.move', 'sale_id', string="Invoices Sale Order", readonly=True)
 

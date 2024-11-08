@@ -21,7 +21,6 @@
         <!-- Menu Stock Produits -->
         <menuitem id="orbit_menu_stock_products" name="Stock" sequence="9">
             
-            
             <menuitem id="orbit_menu_shipping" name="Livraison" 
                 action="stock.action_picking_tree_ready" 
                 groups="orbit.stock_ccbmshop_group_user" 
@@ -43,8 +42,8 @@
         <!-- Menu Ventes -->
         <menuitem id="orbit_menu_sale" name="Ventes" sequence="11">
             <menuitem id="orbit_order_menu" name="Commandes" action="orbit.orbit_sale_order" groups="orbit.sale_ccbmshop_group_user" sequence="1"/>
-            <menuitem id="orbit_preorder_menu" name="Precommandes" action="orbit.orbit_preorder" groups="orbit.sale_ccbmshop_group_user" sequence="2"/>
-            <!-- <menuitem id="orbit_creditorder_menu" name="Commandes à credit" action="orbit.orbit_sale_creditorder" groups="orbit.creditorder_group_user" sequence="17"/> -->
+            <menuitem id="orbit_preorder_menu" name="Précommandes" action="orbit.orbit_preorder" groups="orbit.sale_ccbmshop_group_user" sequence="2"/>
+            <menuitem id="orbit_creditorder_menu" name="Commandes à crédit" action="orbit.orbit_creditorder" groups="orbit.sale_ccbmshop_group_user" sequence="3"/>
         </menuitem>
 
         <!-- Menu Achats -->
