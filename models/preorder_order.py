@@ -46,22 +46,86 @@ class Preorder(models.Model):
 
     payment_count = fields.Float(compute_sudo=True, compute="_compute_advance_payment")
 
+    # Les dates 
+    date_approved_creditorder = fields.Datetime("Date confirmation commande credit", store=True)
     first_payment_date = fields.Date("Date du Premier Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date confirmate date_order
     second_payment_date = fields.Date("Date du Deuxième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # un mois avant livraison
     third_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) 
-    fourth_payment_date = fields.Date("Date du Troisième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date livraison commitment_date
+    fourth_payment_date = fields.Date("Date du Quatrième Paiement", compute='_compute_reminder_dates', readonly=False, store=True) # date livraison commitment_date
 
+    # Montants à payer
     first_payment_amount = fields.Float("1er amount", compute="_compute_order_data", digits=(16, 2), store=True) 
     second_payment_amount = fields.Float("2nd amount", compute="_compute_order_data", digits=(16, 2), store=True) 
     third_payment_amount = fields.Float("3rd amount", compute="_compute_order_data", digits=(16, 2), store=True)
-    fourth_payment_amount = fields.Float("3rd amount", compute="_compute_order_data", digits=(16, 2), store=True)
+    fourth_payment_amount = fields.Float("4rd amount", compute="_compute_order_data", digits=(16, 2), store=True)
 
     first_payment_state = fields.Boolean(string="1er Payment status", compute='_compute_order_data', default=False, store=True)
     second_payment_state = fields.Boolean(string="2nd Payment status", compute='_compute_order_data', default=False, store=True)
     third_payment_state = fields.Boolean(string="3rd Payment status", compute='_compute_order_data', default=False, store=True)
-    fourth_payment_state = fields.Boolean(string="3rd Payment status", compute='_compute_order_data', default=False, store=True)
+    fourth_payment_state = fields.Boolean(string="4rd Payment status", compute='_compute_order_data', default=False, store=True)
 
     invoices = fields.One2many('account.move', 'sale_id', string="Invoices Sale Order", readonly=True)
+
+    # Commande à crédit
+    validation_rh_state = fields.Selection([
+        ('pending', 'Validation en cours'),
+        ('validated', 'Validé'),
+        ('rejected', 'Rejeté')
+    ], string='Validation RH client', required=True, default='pending')
+    validation_rh_date = fields.Date(string='Date de Validation RH', readonly=True)
+    validation_rh_partner_id = fields.Many2one('res.partner', string="Utilisateur RH", readonly=True)
+
+    validation_admin_state = fields.Selection([
+        ('pending', 'En cours de validation'),
+        ('approved', 'Validé'),
+        ('declined', 'Rejeté')
+    ], string='Validation responsable vente', required=True, default='pending', )
+    validation_admin_date = fields.Date(string='Date de Validation Admin', readonly=True)
+    validation_admin_user_id = fields.Many2one('res.users', string="Utilisateur Admin",
+                                               readonly=True)
+    validation_admin_comment = fields.Text(string='Commentaire Admin', readonly=True)
+
+
+    def validate_rh(self):
+        for order in self:
+            order.write({
+                'validation_rh_state': 'validated',
+                'validation_rh_date': fields.Datetime.now(),
+                'validation_rh_partner_id': self.partner_id.id
+            })
+
+    def reject_rh(self):
+        for order in self:
+            order.write({
+                'validation_rh_state': 'rejected',
+                'validation_rh_date': fields.Datetime.now(),
+                'validation_rh_partner_id': self.partner_id.id
+            })
+
+    def approved_responsable(self):
+        for order in self:
+            order.write({
+                'validation_admin_state': 'approved',
+                'validation_admin_date': fields.Datetime.now(),
+                'validation_admin_user_id': self.env.user.id,
+            })
+
+    def declined_responsable(self):
+        for order in self:
+            order.write({
+                'validation_admin_state': 'declined',
+                'validation_admin_date': fields.Datetime.now(),
+                'validation_admin_user_id': self.env.user.id,
+            })
+    
+    def send_resp_client(self):
+        self.write({
+                'state': 'validation', 
+                })
+        # for order in self:
+        #     order.write({
+        #         'state': 'validation', 
+        #         })
 
     @api.depends('order_line.invoice_lines')
     def _get_invoices(self):
@@ -108,53 +172,104 @@ class Preorder(models.Model):
             order_lines = order.order_line.filtered(lambda x: not x.is_downpayment)
             if order_lines:
                 sale_amount_total = sum(order_lines.mapped('price_subtotal')) + sum(order_lines.mapped('price_tax'))
-                # les montants des paiements
-                amount1 = round(sale_amount_total * 0.3, 2)
-                amount2 = round(sale_amount_total * 0.3, 2)
-                amount3 = round(sale_amount_total * 0.4, 2)
 
-                order.first_payment_amount = amount1
-                order.second_payment_amount = amount2
-                order.third_payment_amount = amount3
+                if order.type_sale == 'preorder':
+                    # les montants des paiements
+                    amount1 = round(sale_amount_total * 0.3, 2)
+                    amount2 = round(sale_amount_total * 0.3, 2)
+                    amount3 = round(sale_amount_total * 0.4, 2)
 
-                payments_amount = sum(order.account_payment_ids.filtered(lambda x: x.state == 'posted').mapped('amount'))
+                    order.first_payment_amount = amount1
+                    order.second_payment_amount = amount2
+                    order.third_payment_amount = amount3
 
-                if payments_amount >= round(amount1):
-                    order.first_payment_state = True
-                else:
-                    order.first_payment_state = False
+                    payments_amount = sum(order.account_payment_ids.filtered(lambda x: x.state == 'posted').mapped('amount'))
 
-                if payments_amount >= round(amount2 + amount1):
-                    order.second_payment_state = True
-                else:
-                    order.second_payment_state = False
+                    if payments_amount >= round(amount1):
+                        order.first_payment_state = True
+                    else:
+                        order.first_payment_state = False
 
-                if payments_amount >= order.amount_total and order.amount_residual <= 0:
-                    order.third_payment_state = True
-                else:
-                    order.third_payment_state = False
+                    if payments_amount >= round(amount2 + amount1):
+                        order.second_payment_state = True
+                    else:
+                        order.second_payment_state = False
+
+                    if payments_amount >= order.amount_total and order.amount_residual <= 0:
+                        order.third_payment_state = True
+                    else:
+                        order.third_payment_state = False
+                
+                if order.type_sale == 'creditorder':
+                    # les montants des paiements
+                    amount1 = round(sale_amount_total * 0.5, 2)
+                    amount2 = round(sale_amount_total * 0.2, 2)
+                    amount3 = round(sale_amount_total * 0.15, 2)
+                    amount4 = round(sale_amount_total * 0.15, 2)
+
+                    order.first_payment_amount = amount1
+                    order.second_payment_amount = amount2
+                    order.third_payment_amount = amount3
+                    order.fourth_payment_amount = amount4
+
+                    payments_amount = sum(order.account_payment_ids.filtered(lambda x: x.state == 'posted').mapped('amount'))
+
+                    if payments_amount >= round(amount1):
+                        order.first_payment_state = True
+                    else:
+                        order.first_payment_state = False
+
+                    if payments_amount >= round(amount2 + amount1):
+                        order.second_payment_state = True
+                    else:
+                        order.second_payment_state = False
+                    
+                    if payments_amount >= round(amount3 + amount2 + amount1):
+                        order.third_payment_state = True
+                    else:
+                        order.third_payment_state = False
+
+                    if payments_amount >= order.amount_total and order.amount_residual <= 0:
+                        order.fourth_payment_state = True
+                    else:
+                        order.fourth_payment_state = False
 
             else:
                 order.first_payment_amount = 0.0
                 order.second_payment_amount = 0.0
                 order.third_payment_amount = 0.0
+                order.fourth_payment_amount = 0.0
 
                 order.first_payment_state = False
                 order.second_payment_state = False
                 order.third_payment_state = False
+                order.fourth_payment_state = False
 
 
-    @api.depends('date_order', 'commitment_date')
+    @api.depends('date_order', 'commitment_date', 'date_approved_creditorder')
     def _compute_reminder_dates(self):
         for order in self:
-            if order.date_order and order.commitment_date:
-                order.first_payment_date = order.date_order
-                order.second_payment_date = order.commitment_date - timedelta(days=30)
-                order.third_payment_date = order.commitment_date  # Date de Livraison
-            else:
-                order.first_payment_date = False
-                order.second_payment_date = False
-                order.third_payment_date = False
+            if order.type_sale == 'preorder':
+                if order.date_order and order.commitment_date:
+                    order.first_payment_date = order.date_order
+                    order.second_payment_date = order.commitment_date - timedelta(days=30)
+                    order.third_payment_date = order.commitment_date  # Date de Livraison
+                else:
+                    order.first_payment_date = False
+                    order.second_payment_date = False
+                    order.third_payment_date = False
+            
+            if order.type_sale == 'creditorder':
+                if order.date_approved_creditorder:
+                    order.first_payment_date = order.date_approved_creditorder
+                    order.second_payment_date = order.date_approved_creditorder + timedelta(days=30)
+                    order.third_payment_date = order.date_approved_creditorder  + timedelta(days=60)
+                    order.fourth_payment_date = order.date_approved_creditorder  + timedelta(days=90) # Date de Livraison
+                else:
+                    order.first_payment_date = False
+                    order.second_payment_date = False
+                    order.third_payment_date = False
+                    order.fourth_payment_date = False
 
     @api.depends(
         'currency_id',
@@ -246,6 +361,19 @@ class Preorder(models.Model):
 
             return res
         
+        if self.type_sale == 'creditorder':
+            if self.validation_rh_state == 'validated':
+                if self.validation_admin_state == 'approved':
+                    if self.first_payment_state:
+                        self.date_approved_creditorder = fields.Datetime.now()
+                        return res
+                    else:
+                        raise exceptions.ValidationError(_("Veuillez procéder au paiement du premier acompte pour valider la commande à crédit."))
+                else:
+                    raise exceptions.ValidationError(_("La validation du responsable de vente est requise pour finaliser la commande à crédit. Veuillez contacter un responsable pour approbation."))
+            else:
+                raise exceptions.ValidationError(_("La commande à crédit nécessite l'approbation du service des ressources humaines. Veuillez contacter le responsable RH pour validation."))
+        
     # @api.onchange('amount_residual')
     # def _onchange_state(self):
     #     if self.amount_residual <= 0:
@@ -281,21 +409,12 @@ class Preorder(models.Model):
                     return order.write({ 'state': 'to_delivered' })
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
+            if order.type_sale == 'creditorder':
+                if order.validation_admin_state == 'approved' and order.first_payment_state:
+                    return order.write({ 'state': 'to_delivered' })
+                else:
+                    raise exceptions.ValidationError(_("Veuillez effectuer le paiement du premier acompte"))
                 
-    # def action_to_delivered(self):
-    #     for order in self:
-    #         _logger.info(f"Status de paiements {order.check_invoices_paid()}")
-    #         if order.type_sale == 'order':
-    #             if order.amount_residual <= 0:
-    #                 return order.write({ 'state': 'to_delivered' })  
-    #             else:
-    #                 raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
-    #         if order.type_sale == 'preorder':
-    #             if order.amount_residual <= 0 and order.advance_payment_status == 'paid':
-    #                 return order.write({ 'state': 'to_delivered' })
-    #             else:
-    #                 raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
-
     @api.onchange('order_line.qty_delivered')
     def action_delivered(self):
         for order in self:
@@ -317,43 +436,3 @@ class Preorder(models.Model):
                return order.write({ 'state': 'delivered' })
             
 
-    # # @api.depends('order_line.qty_delivered', 'order_line.product_uom_qty')
-    # # def _compute_delivery_status(self):
-    # #     for order in self:
-    # #         if all(line.qty_delivered >= line.product_uom_qty for line in order.order_line):
-    # #             order.write({
-    # #                 'state': 'delivered'	
-    # #             })
-    # #         elif order.state == 'sale' and order.amount_residual <= 0:
-    # #             order.write({
-    # #                 'state': 'to_delivered'	
-    # #             })
-
-    # #         _logger.info(f" Valeur dans state ==>  {order.state}  type de la valeur ==> {type(order.state)}")
-    # #         _logger.info(f" Valeur dans amount_residual ==> {order.amount_residual} type de la valeur ==> {order.amount_total}")
-
-
-    # def create_invoice_from_order(self):
-    #     for order in self:
-    #         # Filtrer les lignes de commande qui ont des acomptes déjà facturés
-    #         down_payment_lines = order.order_line.filtered(lambda line: line.is_downpayment)
-
-    #         # Vérifier s'il y a des lignes facturables après avoir ignoré les lignes d'acompte
-    #         invoice_lines = order.order_line - down_payment_lines
-
-    #         if not invoice_lines:
-    #             raise exceptions.UserError(_("Il n'y a rien à facturer après avoir pris en compte les factures d'acompte déjà créées."))
-
-    #         # Créer la facture normale pour les lignes restantes
-    #         invoice_ids = order._create_invoices()
-
-    #         if invoice_ids:
-    #             return {
-    #                 'type': 'ir.actions.act_window',
-    #                 'name': 'Customer Invoice',
-    #                 'res_model': 'account.move',
-    #                 'view_mode': 'form',
-    #                 'res_id': invoice_ids.id,
-    #                 'target': 'current',
-    #             }
-            

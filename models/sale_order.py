@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 STATE = [
     ('draft', "Quotation"),
     ('sent', "Sent"),
+    ('validation', "Validation"),
     ('sale', "Commande/Precommande"),
     ('to_delivered', "à livré"),
     ('delivered', "Livré"),
@@ -20,6 +21,7 @@ STATE = [
 ORDER_STATE = [
     ('draft', "Quotation"),
     ('sent', "Sent"),
+    ('validation', "Validation"),
     ('sale', "Commande"),
     ('to_delivered', "à livré"),
     ('delivered', "Livré"),
@@ -30,6 +32,7 @@ ORDER_STATE = [
 PREORDER_STATE = [
     ('draft', "Quotation"),
     ('sent', "Sent"),
+    ('validation', "Validation"),
     ('sale', "Pre-commande"),
     ('to_delivered', "à livré"),
     ('delivered', "Livré"),
@@ -40,6 +43,7 @@ PREORDER_STATE = [
 CREDITORDER_STATE = [
     ('draft', "Quotation"),
     ('sent', "Sent"),
+    ('validation', "Validation"),
     ('sale', "Commande-credit"),
     ('to_delivered', "à livré"),
     ('delivered', "Livré"),

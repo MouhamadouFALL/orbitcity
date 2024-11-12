@@ -104,8 +104,12 @@
 
                     <!-- ############## Partie Commandes à crédit ############## -->
                     <page string="Validations CCBM et RH" attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
-
+                        <group>
+                            <field name="validation_rh_state" readonly="True"/>
+                            <field name="validation_admin_state" readonly="True"/>
+                        </group>
                     </page>
+
                     <page string="Tableau Commandes crédits"
                           attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
                         <group string="Dates and Amounts">

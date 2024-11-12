@@ -10,8 +10,11 @@
 
             <!-- ######################################### Header ######################################### -->
             <field name="state" position="replace">
+                <field name="validation_rh_state" invisible="1"/>
+                <field name="validation_admin_state" invisible="1"/>
                 <field name="amount_residual"/>
-                <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
+                <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '=', 'creditorder'),]}" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
+                <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '!=', 'creditorder'),]}" statusbar_visible="draft,sent,validation,sale,to_delivered,delivered"/>
             </field>
             <field name="state" position="before">
                 <button name="action_to_delivered" type="object" string="To deliver" data-hotkey="q" class="btn-primary"
@@ -36,6 +39,24 @@
                 <attribute name="string">Retour en Devis</attribute>
                 <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'to_delivered', 'delivered'])]}</attribute>
             </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button name="send_resp_client" string="Envoyer RH client" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': [('state', 'not in',['draft', 'sent'])]}"
+                            icon="fa-paper-plane"/>
+
+                <button name="validate_rh" string="RH Vadilider" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': ['|', ('validation_rh_state', 'not in',['pending', 'rejected']), ('type_sale', '!=', 'creditorder'),]}"
+                            icon="fa-thumbs-up"/>
+                <button name="approved_responsable" string="Approuver Commande" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': ['|', ('validation_admin_state', 'not in',['pending', 'declined']), ('type_sale', '!=', 'creditorder'),]}"
+                            icon="fa-thumbs-up"/>
+            </xpath>
+
+
 
             <!-- ######################################### Sheet ######################################### -->
             <field name="partner_id" position="before">
