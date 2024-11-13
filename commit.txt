@@ -1,5 +1,9 @@
-purchase_order: Mise à jour de la méthode `button_confirm` pour associer la signature de l'utilisateur connecté
+[IMP] Commande à crédit : ajout de la validation et ajustements selon le type de business
 
-- Ajout de la logique permettant d'enregistrer la signature de l'utilisateur qui confirme le bon d'achat
-
-
+- Ajout d'une étape de validation dans les étapes de traitement des commandes à crédit.
+- Modification des montants calculés en fonction du type de business.
+- Adaptation des dates d'échéance selon les spécificités du business.
+- Contrôle de la confirmation de la commande à crédit avec vérification obligatoire :
+  * Validation RH
+  * Validation CCBM
+  * Versement d'un acompte de 50% (si applicable)

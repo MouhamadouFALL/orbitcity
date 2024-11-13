@@ -70,7 +70,8 @@ class Preorder(models.Model):
     validation_rh_state = fields.Selection([
         ('pending', 'Validation en cours'),
         ('validated', 'Validé'),
-        ('rejected', 'Rejeté')
+        ('rejected', 'Rejeté'),
+        ('cancelled', 'Annulé'),
     ], string='Validation RH client', required=True, default='pending')
     validation_rh_date = fields.Date(string='Date de Validation RH', readonly=True)
     validation_rh_partner_id = fields.Many2one('res.partner', string="Utilisateur RH", readonly=True)
@@ -78,7 +79,8 @@ class Preorder(models.Model):
     validation_admin_state = fields.Selection([
         ('pending', 'En cours de validation'),
         ('approved', 'Validé'),
-        ('declined', 'Rejeté')
+        ('declined', 'Rejeté'),
+        ('cancelled', 'Annulé'),
     ], string='Validation responsable vente', required=True, default='pending', )
     validation_admin_date = fields.Date(string='Date de Validation Admin', readonly=True)
     validation_admin_user_id = fields.Many2one('res.users', string="Utilisateur Admin",
@@ -87,12 +89,30 @@ class Preorder(models.Model):
 
 
     def validate_rh(self):
+
         for order in self:
-            order.write({
-                'validation_rh_state': 'validated',
-                'validation_rh_date': fields.Datetime.now(),
-                'validation_rh_partner_id': self.partner_id.id
-            })
+            # Vérification de l'appartenance de l'utilisateur au groupe requis
+            if self.env.user.has_group("orbit.credit_group_user"):
+                if order.partner_id.company_id:
+                    # Filtrer pour obtenir le responsable principal de la validation
+                    user_main = order.partner_id.company_id.child_ids.filtered(lambda p: p.role == 'main_user')[0]
+                    order.write({
+                        'validation_rh_state': 'validated',
+                        'validation_rh_date': fields.Datetime.now(),
+                        'validation_rh_partner_id': user_main.id
+                    })
+                else:
+                    # Si l'entreprise n'est pas définie, utiliser l'utilisateur actuel
+                    order.write({
+                        'validation_rh_state': 'validated',
+                        'validation_rh_date': fields.Datetime.now(),
+                        'validation_rh_partner_id': self.env.user.id
+                    })
+            else:
+                raise exceptions.ValidationError(_(
+                    "Vous n'avez pas les droits requis pour valider cette commande. "
+                    "Veuillez contacter un utilisateur ayant les permissions nécessaires dans le groupe 'Utilisateur Crédit'."
+                    ))
 
     def reject_rh(self):
         for order in self:
@@ -334,6 +354,15 @@ class Preorder(models.Model):
             order.amount_residual = amount_residual
             order.advance_payment_status = payment_state
 
+    def action_cancel(self):
+        res = super(Preorder, self).action_cancel()
+        self.write({
+            'validation_rh_state': 'cancelled',
+            'validation_admin_state': 'cancelled.',
+        })
+
+        return res
+    
     def action_confirm(self):
         res = super(Preorder, self).action_confirm()
         

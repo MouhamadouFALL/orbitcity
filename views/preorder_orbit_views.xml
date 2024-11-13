@@ -37,7 +37,7 @@
                         class="oe_stat_button"
                         icon="fa-money"
                         attrs="{'invisible': [('payment_count', '=', 0)]}">
-                        <field name="payment_count" widget="statinfo" string="Payments"/>
+                        <field name="payment_count" widget="statinfo" string="Paiements"/>
                     </button>
                 </xpath>
                 <field name="validity_date" position="before">
@@ -51,7 +51,7 @@
 
                 <!-- ############## Sheet > Notebook ############## -->
                 <xpath expr="//notebook" position="inside">
-                    <page string="Payment advances"
+                    <page string="Avances de paiement"
                           groups="account.group_account_invoice"
                           attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
                         <field
@@ -61,7 +61,7 @@
                                 context="{'form_view_ref': 'account.view_account_payment_form', 'tree_view_ref': 'account.view_account_payment_tree'}"
                         />
                     </page>
-                    <page string="Invoices Order"
+                    <page string="Factures"
                           groups="account.group_account_invoice"
                           attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}">
                         <field
@@ -73,71 +73,78 @@
                     </page>
 
                     <!-- ############## Page Précommandes ############## -->
-                    <page string="Tableau Precommandes"
+                    <page string="Échéancier"
                           attrs="{'invisible': [('type_sale', 'not in', ['preorder', ])]}">
-                        <group string="Dates and Amounts">
+                        <group string="Dates &amp; Montants">
                             <group>
-                                <field name="first_payment_date" string="1st due date"/>
-                                <field name="second_payment_date" string="2nd due date"/>
-                                <field name="third_payment_date" string="3rd due date"/>
+                                <field name="first_payment_date" string="1ère date d'échéance"/>
+                                <field name="second_payment_date" string="2ème date d'échéance"/>
+                                <field name="third_payment_date" string="3ème date d'échéance"/>
                             </group>
                             <group>
-                                <field name="first_payment_amount" string="1er amount" readonly="1"/>
-                                <field name="second_payment_amount" string="2nd amount" readonly="1"/>
-                                <field name="third_payment_amount" string="3rd amount" readonly="1"/>
+                                <field name="first_payment_amount" string="1er montant" readonly="1"/>
+                                <field name="second_payment_amount" string="2ème montant" readonly="1"/>
+                                <field name="third_payment_amount" string="3ème montant" readonly="1"/>
                             </group>
                         </group>
-                        <group string="Payment follow-up">
-                            <group >
-                                <field name="amount_total" />
-                                <field name="amount_residual" />
-                                <field name="amount_payed" />
+                        <group string="Suivi Paiements">
+                            <group string="Montants">
+                                <field name="amount_total" string="Montant total"/>
+                                <field name="amount_residual" string="Montant Restant"/>
                             </group>
-                            <group >
+                            <group string="Status de paiements">
                                 <field name="advance_payment_status"/>
-                                    <field name="first_payment_state" widget="boolean_toggle"/>
-                                    <field name="second_payment_state" widget="boolean_toggle"/>
-                                    <field name="third_payment_state" widget="boolean_toggle"/>
+                                    <field name="first_payment_state" string="1er paiement" widget="boolean_toggle" />
+                                    <field name="second_payment_state" string="2ème paiement" widget="boolean_toggle"/>
+                                    <field name="third_payment_state" string="3ème paiement" widget="boolean_toggle"/>
                             </group>
                         </group>
                     </page>
 
                     <!-- ############## Partie Commandes à crédit ############## -->
-                    <page string="Validations CCBM et RH" attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
+                    <page string="Validations" attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
                         <group>
-                            <field name="validation_rh_state" readonly="True"/>
-                            <field name="validation_admin_state" readonly="True"/>
+                            <group>
+                                <field name="validation_rh_state" string="Responsable du client" readonly="True"/>
+                                <field name="validation_rh_date" string="Date de validation RH"/>
+                                <field name="validation_rh_partner_id" string="Nom Responsable"/>
+                            </group>
+                            <group>
+                                <field name="validation_admin_state" string="Responsable de vente" readonly="True"/>
+                                <field name="validation_admin_date" string="Date de validation Admin"/>
+                                <field name="validation_admin_user_id" string="Nom Responsable de vente"/>
+                            </group>
                         </group>
                     </page>
 
-                    <page string="Tableau Commandes crédits"
+                    <page string="Échéancier"
                           attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
-                        <group string="Dates and Amounts">
-                            <group>
-                                <field name="first_payment_date" string="1st due date"/>
-                                <field name="second_payment_date" string="2nd due date"/>
-                                <field name="third_payment_date" string="3rd due date"/>
-                                <field name="fourth_payment_date" string="4rd due date"/>
+                        <group string="Dates &amp; Montants">
+                            <group string="Dates d'échéance">
+                                <field name="first_payment_date" string="1ère date d'échéance"/>
+                                <field name="second_payment_date" string="2ème date d'échéance"/>
+                                <field name="third_payment_date" string="3ème date d'échéance"/>
+                                <field name="fourth_payment_date" string="4ème date d'échéance"/>
                             </group>
-                            <group>
-                                <field name="first_payment_amount" string="1er amount" readonly="1"/>
-                                <field name="second_payment_amount" string="2nd amount" readonly="1"/>
-                                <field name="third_payment_amount" string="3rd amount" readonly="1"/>
-                                <field name="fourth_payment_amount" string="4rd amount" readonly="1"/>
+                            <group string="Montants à verser">
+                                <field name="first_payment_amount" string="1er montant" readonly="1"/>
+                                <field name="second_payment_amount" string="2ème montant" readonly="1"/>
+                                <field name="third_payment_amount" string="3ème montant" readonly="1"/>
+                                <field name="fourth_payment_amount" string="4ème montant" readonly="1"/>
                             </group>
                         </group>
-                        <group string="Payment follow-up">
-                            <group >
-                                <field name="amount_total" />
-                                <field name="amount_residual" />
-                                <field name="amount_payed" />
+                        <group string="Suivi Paiements">
+                            <group string="Montants">
+                                <field name="amount_total" string="Montant total"/>
+                                <field name="amount_residual" string="Montant Restant"/>
+                                <field name="amount_payed" string="Montant payé"/>
                             </group>
-                            <group >
+                            <group string="Status de paiements">
                                 <field name="advance_payment_status"/>
-                                    <field name="first_payment_state" widget="boolean_toggle"/>
-                                    <field name="second_payment_state" widget="boolean_toggle"/>
-                                    <field name="third_payment_state" widget="boolean_toggle"/>
-                                    <field name="fourth_payment_state" widget="boolean_toggle"/>
+                                    <field name="first_payment_state" string="1er paiement" widget="boolean_toggle" />
+                                    <field name="second_payment_state" string="2ème paiement" widget="boolean_toggle"/>
+                                    <field name="third_payment_state" string="3ème paiement" widget="boolean_toggle"/>
+                                    <field name="fourth_payment_state" string="4ème paiement" widget="boolean_toggle"/>
                             </group>
                         </group>
                     </page>

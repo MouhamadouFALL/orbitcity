@@ -11,6 +11,16 @@ class ResPartner(models.Model):
     register_com = fields.Char('Registre Commercial')
     ninea = fields.Char(string='NINEA')
 
+    role = fields.Selection([
+            ('main_user', 'Utilisateur Principal'),
+            ('secondary_user', 'Utilisateur Secondaire')
+        ], string='Rôle', default='secondary_user')
+    adhesion = fields.Selection([
+            ('pending', 'En cours de validation'),
+            ('accepted', 'Accepté'),
+            ('rejected', 'Rejeté')
+        ], string='Adhésion', default='pending')
+    
     # Nouveau champ pour le responsable du suivi
     payment_responsible_id = fields.Many2one('res.users', string='Follow-up Responsible',
                                              help="Optionally you can assign a user to this field, which will make him responsible for the action.",
@@ -39,3 +49,5 @@ class ResPartner(models.Model):
     # Nouveau champ pour la dernière date de suivi
     latest_followup_date = fields.Date('Latest Follow-up Date', compute='_compute_latest', store=False,
                                        help="Latest date that the follow-up level of the partner was changed")
+    
+

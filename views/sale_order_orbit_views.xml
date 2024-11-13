@@ -10,20 +10,29 @@
 
             <!-- ######################################### Header ######################################### -->
             <field name="state" position="replace">
-                <field name="validation_rh_state" invisible="1"/>
-                <field name="validation_admin_state" invisible="1"/>
-                <field name="amount_residual"/>
-                <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '=', 'creditorder'),]}" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
-                <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '!=', 'creditorder'),]}" statusbar_visible="draft,sent,validation,sale,to_delivered,delivered"/>
+                
             </field>
+            <xpath expr="//header" position="after">
+                <header>
+                    <field name="validation_rh_state" invisible="1"/>
+                    <field name="validation_admin_state" invisible="1"/>
+                    <field name="amount_residual"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '=', 'creditorder'),]}" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '!=', 'creditorder'),]}" statusbar_visible="draft,sent,validation,sale,to_delivered,delivered"/>
+                </header>
+            </xpath>
             <field name="state" position="before">
-                <button name="action_to_delivered" type="object" string="To deliver" data-hotkey="q" class="btn-primary"
+                <button name="action_to_delivered" type="object" string="à livrer" data-hotkey="q" class="btn-primary"
                 attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'sale')]}"/>
             </field>
             <field name="state" position="before">
-                <button name="action_delivered" type="object" string="Delivered" data-hotkey="q" class="btn-primary"
+                <button name="action_delivered" type="object" string="livré" data-hotkey="q" class="btn-primary"
                 attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'to_delivered')]}"/>
             </field>
+
+            <xpath expr="//button[@id='action_confirm']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'not in', ['sent', 'validation'])]}</attribute>
+            </xpath>
 
             <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
                 <attribute name="string">Facturer</attribute>
@@ -32,11 +41,11 @@
 
             <xpath expr="//button[@name='action_cancel']" position="attributes">
                 <attribute name="string">Annuler</attribute>
-                <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder']), '|', ('state', 'not in', ['draft', 'sent', 'sale', 'to_delivered', 'delivered']), ('id', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder']), '|', ('state', 'not in', ['draft', 'sent', 'sale', 'validation', 'to_delivered', 'delivered']), ('id', '=', False)]}</attribute>
             </xpath>
 
             <xpath expr="//button[@name='action_draft']" position="attributes">
-                <attribute name="string">Retour en Devis</attribute>
+                <attribute name="string">Retourner en Devis</attribute>
                 <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'to_delivered', 'delivered'])]}</attribute>
             </xpath>
 
@@ -60,7 +69,7 @@
 
             <!-- ######################################### Sheet ######################################### -->
             <field name="partner_id" position="before">
-                <field name="type_sale" widget="badge" attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}"
+                <field name="type_sale" string="Type de vente" widget="badge" attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}"
                        decoration-primary="type_sale == 'order'"
                        decoration-success="type_sale == 'preorder'"
                        decoration-muted="type_sale == 'creditorder'"
