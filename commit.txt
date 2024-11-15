@@ -1,9 +1,6 @@
-[IMP] Commande à crédit : ajout de la validation et ajustements selon le type de business
+[FIX] Validation des droits utilisateur pour la confirmation de commande à crédit et le menu catégorie
 
-- Ajout d'une étape de validation dans les étapes de traitement des commandes à crédit.
-- Modification des montants calculés en fonction du type de business.
-- Adaptation des dates d'échéance selon les spécificités du business.
-- Contrôle de la confirmation de la commande à crédit avec vérification obligatoire :
-  * Validation RH
-  * Validation CCBM
-  * Versement d'un acompte de 50% (si applicable)
+- Correction de l'identifiant externe du groupe `credit_group_user` en utilisant un identifiant pleinement qualifié (`module_name.credit_group_user`).
+- Ajout d'un message d'erreur explicite pour informer l'utilisateur en cas de droits insuffisants : 
+  "Vous n'avez pas les droits requis pour valider cette commande. Veuillez contacter un utilisateur ayant les permissions nécessaires dans le groupe 'Utilisateur Crédit'."
+- Amélioration de la logique de validation RH pour prendre en compte le responsable principal de l'entreprise associée au client, ou l'utilisateur actuel en cas d'absence de l'entreprise.

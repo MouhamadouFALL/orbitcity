@@ -51,7 +51,7 @@
 
                 <!-- ############## Sheet > Notebook ############## -->
                 <xpath expr="//notebook" position="inside">
-                    <page string="Avances de paiement"
+                    <page string="Paiement d'avance"
                           groups="account.group_account_invoice"
                           attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
                         <field
@@ -104,15 +104,15 @@
                     <!-- ############## Partie Commandes à crédit ############## -->
                     <page string="Validations" attrs="{'invisible': [('type_sale', 'not in', ['creditorder', ])]}">
                         <group>
-                            <group>
+                            <group string="Responsable du client">
                                 <field name="validation_rh_state" string="Responsable du client" readonly="True"/>
-                                <field name="validation_rh_date" string="Date de validation RH"/>
+                                <field name="validation_rh_date" string="Date "/>
                                 <field name="validation_rh_partner_id" string="Nom Responsable"/>
                             </group>
-                            <group>
+                            <group string="Responsable de vente">
                                 <field name="validation_admin_state" string="Responsable de vente" readonly="True"/>
-                                <field name="validation_admin_date" string="Date de validation Admin"/>
-                                <field name="validation_admin_user_id" string="Nom Responsable de vente"/>
+                                <field name="validation_admin_date" string="Date "/>
+                                <field name="validation_admin_user_id" string="Nom Responsable "/>
                             </group>
                         </group>
                     </page>

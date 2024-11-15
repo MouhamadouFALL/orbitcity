@@ -36,7 +36,7 @@
                 groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
                 sequence="3"
             />
-            <menuitem id="orbit_menu_products" name="Categories" 
+            <menuitem id="orbit_menu_categories" name="Categories" 
                 action="product.product_category_action_form" 
                 groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
                 sequence="4"

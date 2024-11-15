@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import res_company
 from . import res_partner
 from . import orbit_affiliate
 from . import res_users

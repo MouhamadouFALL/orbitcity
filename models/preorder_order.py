@@ -93,14 +93,20 @@ class Preorder(models.Model):
         for order in self:
             # Vérification de l'appartenance de l'utilisateur au groupe requis
             if self.env.user.has_group("orbit.credit_group_user"):
-                if order.partner_id.company_id:
+                entreprise = order.partner_id.parent_id
+                _logger.info(f"ID Entreprise de l'employe === : {order.partner_id.parent_id.id}")
+                if entreprise and entreprise.id != 2:
                     # Filtrer pour obtenir le responsable principal de la validation
-                    user_main = order.partner_id.company_id.child_ids.filtered(lambda p: p.role == 'main_user')[0]
-                    order.write({
-                        'validation_rh_state': 'validated',
-                        'validation_rh_date': fields.Datetime.now(),
-                        'validation_rh_partner_id': user_main.id
-                    })
+                    user_main = order.partner_id.parent_id.child_ids.filtered(lambda p: p.role == 'main_user')
+                    if user_main:
+                        user_main = user_main[0]
+                        order.write({
+                            'validation_rh_state': 'validated',
+                            'validation_rh_date': fields.Datetime.now(),
+                            'validation_rh_partner_id': user_main.id
+                        })
+                    else:
+                        raise exceptions.ValidationError(_("Aucun utilisateur avec le rôle Principal n'est défini dans l'entreprise associée du client."))
                 else:
                     # Si l'entreprise n'est pas définie, utiliser l'utilisateur actuel
                     order.write({
@@ -399,9 +405,15 @@ class Preorder(models.Model):
                     else:
                         raise exceptions.ValidationError(_("Veuillez procéder au paiement du premier acompte pour valider la commande à crédit."))
                 else:
-                    raise exceptions.ValidationError(_("La validation du responsable de vente est requise pour finaliser la commande à crédit. Veuillez contacter un responsable pour approbation."))
+                    raise exceptions.ValidationError(_(
+                        "La validation du responsable de vente est requise pour finaliser la commande à crédit." 
+                        "Veuillez contacter un responsable pour approbation."
+                        ))
             else:
-                raise exceptions.ValidationError(_("La commande à crédit nécessite l'approbation du service des ressources humaines. Veuillez contacter le responsable RH pour validation."))
+                raise exceptions.ValidationError(_(
+                    "La commande à crédit nécessite l'approbation du service des ressources humaines." 
+                    "Veuillez contacter le responsable RH pour validation."
+                    ))
         
     # @api.onchange('amount_residual')
     # def _onchange_state(self):

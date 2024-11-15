@@ -6,11 +6,16 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <span class="d-inline-block">
+
                     <field name="en_promo"/>
                     <label for="en_promo"/>
 
                     <field name="is_preorder"/>
                     <label for="is_preorder"/>
+
+                    <field name="is_creditorder"/>
+                    <label for="is_creditorder"/>
+
                 </span>
             </xpath>
             <xpath expr="//div[@name='pricing']" position="after">
@@ -21,6 +26,12 @@
                         options="{'currency_field': 'currency_id', 'field_digits': True}" />
                 </div>
                 
+                <label for="creditorder_price" attrs="{'invisible': [('is_creditorder', '=', False)]}"/>
+                <div name="creditorder_price" attrs="{'invisible': [('is_creditorder', '=', False)]}">
+                    <field name="creditorder_price" class="oe_inline" widget='monetary' 
+                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                </div>
+
                 <label for="rate_price" attrs="{'invisible': [('en_promo', '=', False)]}"/>
                 <div name="rate_price">
                     <field name="rate_price" class="oe_inline" widget='float' attrs="{'invisible': [('en_promo', '=', False)]}"/>
@@ -33,7 +44,7 @@
 
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
-                <page string="Preorder" invisible="1">
+                <page string="Pr2commande" invisible="1">
                     <group string="Preorder">
                         <group >
                             <field name="preorder_deadline" string="Dead Line preorder allowed"/>
@@ -45,8 +56,8 @@
                         </group>
                     </group>
                 </page>
-                <page string="Quantities">
-                    <group string="Quantities">
+                <page string="Quantités">
+                    <group string="Quantitiés">
                         <group>
                             <field name="qty_available" string="Quantité disponible" readonly="1"/>
                             <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
@@ -71,7 +82,8 @@
         <field name="inherit_id" ref="product.product_product_tree_view"/>
         <field name="arch" type="xml">
             <field name="type" position="after">
-                <field name="is_preorder" optional="hide" string="Preordered"/>
+                <field name="is_preorder" optional="hide" string="Précommandé"/>
+                <field name="is_creditorder" optional="hide" string="Commande à crédit"/>
                 <field name="preordered_qty" string="Qty preordered" optional="show" sum="Total Preorder qty"/>
                 <field name="ordered_qty" string="Qty ordered" optional="hide" sum="Total Order qty" />
             </field>
@@ -87,8 +99,10 @@
         <!-- <field name="inherit_id" ref="product.product_search_form_view"/> -->
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <filter string="available for preorder" name="is_preorder" domain="[('is_preorder', '=', True)]"/>
-                <filter string="not available for preorder" name="is_preorder" domain="[('is_preorder', '=', False)]"/>
+                <filter string="Disponible en précommande" name="is_preorder" domain="[('is_preorder', '=', True)]"/>
+                <filter string="Pas disponible en précommande" name="is_preorder" domain="[('is_preorder', '=', False)]"/>
+                <filter string="Disponible pour commande à crédit" name="is_creditorder" domain="[('is_creditorder', '=', True)]"/>
+                <filter string="Pas disponible pour commande à crédit" name="is_creditorder" domain="[('is_creditorder', '=', False)]"/>
             </field>
         </field>
     </record>
