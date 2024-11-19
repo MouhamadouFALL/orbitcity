@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    is_preorder = fields.Boolean(string="Available for preorder", default=True) # produit disponible pour une précommande
+    is_preorder = fields.Boolean(string="Disponible en précommande", default=False) # produit disponible pour une précommande
     preorder_deadline = fields.Date(string="preorder expery date") # date à laquelle un produit ne sera plus disponible pour une précommande
     preorder_quantity_allow = fields.Integer(string="Quantité de précommande", default=0) # quantité autorisé à précommandé pour un produit
     preorder_payment_option = fields.Selection([
