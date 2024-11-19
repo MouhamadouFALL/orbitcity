@@ -78,8 +78,8 @@ class Preorder(models.Model):
 
     validation_admin_state = fields.Selection([
         ('pending', 'En cours de validation'),
-        ('approved', 'Validé'),
-        ('declined', 'Rejeté'),
+        ('validated', 'Validé'),
+        ('rejected', 'Rejeté'),
         ('cancelled', 'Annulé'),
     ], string='Validation responsable vente', required=True, default='pending', )
     validation_admin_date = fields.Date(string='Date de Validation Admin', readonly=True)
@@ -131,15 +131,15 @@ class Preorder(models.Model):
     def approved_responsable(self):
         for order in self:
             order.write({
-                'validation_admin_state': 'approved',
+                'validation_admin_state': 'validated',
                 'validation_admin_date': fields.Datetime.now(),
                 'validation_admin_user_id': self.env.user.id,
             })
 
-    def declined_responsable(self):
+    def rejected_responsable(self):
         for order in self:
             order.write({
-                'validation_admin_state': 'declined',
+                'validation_admin_state': 'rejected',
                 'validation_admin_date': fields.Datetime.now(),
                 'validation_admin_user_id': self.env.user.id,
             })
@@ -191,7 +191,8 @@ class Preorder(models.Model):
             'order_line.price_tax', 
             'order_line.price_total', 
             'account_payment_ids', 
-            'amount_residual'
+            'amount_residual',
+            'date_approved_creditorder'
     )
     def _compute_order_data(self):
         for order in self:
@@ -398,7 +399,7 @@ class Preorder(models.Model):
         
         if self.type_sale == 'creditorder':
             if self.validation_rh_state == 'validated':
-                if self.validation_admin_state == 'approved':
+                if self.validation_admin_state == 'validated':
                     if self.first_payment_state:
                         self.date_approved_creditorder = fields.Datetime.now()
                         return res
@@ -451,7 +452,7 @@ class Preorder(models.Model):
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer les paiements"))
             if order.type_sale == 'creditorder':
-                if order.validation_admin_state == 'approved' and order.first_payment_state:
+                if order.validation_admin_state == 'validated' and order.first_payment_state:
                     return order.write({ 'state': 'to_delivered' })
                 else:
                     raise exceptions.ValidationError(_("Veuillez effectuer le paiement du premier acompte"))

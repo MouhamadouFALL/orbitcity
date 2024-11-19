@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from odoo import fields, models, api, _
+from datetime import datetime
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    is_enterprise = fields.Boolean(string="Est Entreprise", default=False)
-    is_main_contact = fields.Boolean(string="Contact Principal", default=False)
+    #is_enterprise = fields.Boolean(string="Est Entreprise", default=False)
+    #is_main_contact = fields.Boolean(string="Contact Principal", default=False)
+    enterprise_code = fields.Char(string="Code Entreprise", default="Code")
     register_com = fields.Char('Registre Commercial')
     ninea = fields.Char(string='NINEA')
 
@@ -49,5 +51,24 @@ class ResPartner(models.Model):
     # Nouveau champ pour la dernière date de suivi
     latest_followup_date = fields.Date('Latest Follow-up Date', compute='_compute_latest', store=False,
                                        help="Latest date that the follow-up level of the partner was changed")
+    
+
+
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """ Méthode pour générer un code unique basé sur le nom, la date de création et le rang de l'entreprise """
+
+        for vals in vals_list:
+            if vals.get('is_company', None):
+                code_date_creation = datetime.now().strftime('%d%m%Y')
+                code_number = self.search_count([('is_company', '=', True)]) + 1
+                code_name = str(vals.get('name')[0:4]).upper()
+                vals['enterprise_code'] = f"{code_name}{code_date_creation}{code_number}"
+
+                return super(ResPartner, self).create(vals)
+            else:
+                return super(ResPartner, self).create(vals)
+        
     
 
