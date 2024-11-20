@@ -363,12 +363,15 @@ class Preorder(models.Model):
 
     def action_cancel(self):
         res = super(Preorder, self).action_cancel()
-        self.write({
-            'validation_rh_state': 'cancelled',
-            'validation_admin_state': 'cancelled.',
-        })
 
-        return res
+        if self.type_sale == 'creditorder':
+            self.write({
+                'validation_rh_state': 'cancelled',
+                'validation_admin_state': 'cancelled',
+            })
+            return res
+        else:
+            return res
     
     def action_confirm(self):
         res = super(Preorder, self).action_confirm()

@@ -13,7 +13,7 @@
             <xpath expr="sheet/group" position="after">
                 <group string="Meta infos Entreprise" attrs="{'invisible': [('is_company', '=', False)]}">
                     <group>
-                        <field name="enterprise_code"/>
+                        <field name="entreprise_code"/>
                         <field name="role"/>
                         <field name="register_com"/>
                         <field name="ninea"/>

@@ -9,7 +9,7 @@ class ResPartner(models.Model):
 
     #is_enterprise = fields.Boolean(string="Est Entreprise", default=False)
     #is_main_contact = fields.Boolean(string="Contact Principal", default=False)
-    enterprise_code = fields.Char(string="Code Entreprise", default="Code")
+    entreprise_code = fields.Char(string="Code Entreprise", default="Code")
     register_com = fields.Char('Registre Commercial')
     ninea = fields.Char(string='NINEA')
 
@@ -64,7 +64,7 @@ class ResPartner(models.Model):
                 code_date_creation = datetime.now().strftime('%d%m%Y')
                 code_number = self.search_count([('is_company', '=', True)]) + 1
                 code_name = str(vals.get('name')[0:4]).upper()
-                vals['enterprise_code'] = f"{code_name}{code_date_creation}{code_number}"
+                vals['entreprise_code'] = f"{code_name}{code_date_creation}{code_number}"
 
                 return super(ResPartner, self).create(vals)
             else:
