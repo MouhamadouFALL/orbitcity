@@ -7,8 +7,7 @@ from datetime import datetime
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    #is_enterprise = fields.Boolean(string="Est Entreprise", default=False)
-    #is_main_contact = fields.Boolean(string="Contact Principal", default=False)
+
     entreprise_code = fields.Char(string="Code Entreprise", default="Code")
     register_com = fields.Char('Registre Commercial')
     ninea = fields.Char(string='NINEA')
