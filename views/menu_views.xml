@@ -21,7 +21,7 @@
         <!-- Menu Stock Produits -->
         <menuitem id="orbit_menu_stock_products" name="Stock" sequence="9">
             
-            <menuitem id="orbit_menu_shipping" name="Livraison" 
+            <menuitem id="orbit_menu_shipping" name="Livraisons" 
                 action="stock.action_picking_tree_ready" 
                 groups="orbit.stock_ccbmshop_group_user" 
                 sequence="1"    
@@ -31,7 +31,7 @@
                 groups="orbit.stock_ccbmshop_group_user" 
                 sequence="2"
             />
-            <menuitem id="orbit_menu_products" name="Products" 
+            <menuitem id="orbit_menu_products" name="Produits" 
                 action="sale.product_template_action" 
                 groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
                 sequence="3"
