@@ -21,11 +21,13 @@
                 </attribute>
             </field>
             <page name="internal_notes" position="after">
-                <group>
+                <page name="verified_account" string="Compte User">
                     <group>
-                        <field name="is_verified"/>
+                        <group>
+                            <field name="is_verified"/>
+                        </group>
                     </group>
-                </group>
+                </page>
             </page>
         </field>
     </record>
