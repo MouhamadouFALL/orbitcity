@@ -75,6 +75,7 @@ class Preorder(models.Model):
     ], string='Validation RH client', required=True, default='pending')
     validation_rh_date = fields.Date(string='Date de Validation RH', readonly=True)
     validation_rh_partner_id = fields.Many2one('res.partner', string="Utilisateur RH", readonly=True)
+    email_rh = fields.Char(string="Email RH", compute="_compute_get_emailrh")
 
     validation_admin_state = fields.Selection([
         ('pending', 'En cours de validation'),
@@ -87,6 +88,10 @@ class Preorder(models.Model):
                                                readonly=True)
     validation_admin_comment = fields.Text(string='Commentaire Admin', readonly=True)
 
+    @api.depends("partner_id.parent_id")
+    def _compute_get_emailrh(self):
+        email_user_main = self.partner_id.parent_id.child_ids.filtered(lambda p: p.role == 'main_user')[:1].email
+        return email_user_main if email_user_main else False
 
     def validate_rh(self):
 
@@ -97,14 +102,20 @@ class Preorder(models.Model):
                 _logger.info(f"ID Entreprise de l'employe === : {order.partner_id.parent_id.id}")
                 if entreprise and entreprise.id != 2:
                     # Filtrer pour obtenir le responsable principal de la validation
-                    user_main = order.partner_id.parent_id.child_ids.filtered(lambda p: p.role == 'main_user')
+                    user_main = order.partner_id.parent_id.child_ids.filtered(lambda p: p.role == 'main_user')[:1]
                     if user_main:
-                        user_main = user_main[0]
+                        # user_main = user_main[0]
                         order.write({
                             'validation_rh_state': 'validated',
                             'validation_rh_date': fields.Datetime.now(),
                             'validation_rh_partner_id': user_main.id
                         })
+                        
+                        # Envoyer un email au RH
+                        email_template = self.env.ref('orbit.mail_template_rh_validation')
+                        email_template.with_context(order_id=order.id).send_mail(order.id, force_send=True)
+                        
+
                     else:
                         raise exceptions.ValidationError(_("Aucun utilisateur avec le rôle Principal n'est défini dans l'entreprise associée du client."))
                 else:

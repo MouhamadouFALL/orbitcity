@@ -1,0 +1,35 @@
+
+<odoo>
+    <data>
+
+        <record id="mail_template_rh_validation" model="mail.template">
+            <field name="name">RH: Validation commande a credit </field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject"> Demande de validation d'une commande à crédit </field>
+            <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted or 'no-reply@ccbm.sn') }}</field>
+            <field name="partner_to">{{ object.email_rh }}</field>
+            <field name="description">Sent to customers on order confirmation</field>
+            <field name="body_html" type="html">
+
+            <![CDATA[
+                <p>Bonjour,</p>
+                <p>Une nouvelle demande de commande à crédit a été créée et nécessite votre validation :</p>
+                <ul>
+                    <li><strong>Numéro de commande :</strong> {{ object.name }}</li>
+                    <li><strong>Client :</strong> {{ object.partner_id.name }}</li>
+                    <li><strong>Montant total :</strong> {{ object.amount_total }} {{ object.currency_id.name }}</li>
+                </ul>
+                <p>Veuillez examiner cette demande et prendre les mesures appropriées.</p>
+                <p>Cordialement,<br/>Le système automatique</p>
+                <p style="font-size: 12px; color: #888;">Généré par CCBM SHOP</p>
+            ]]>
+
+            </field>
+            <field name="report_template" ref="action_report_saleorder"/>
+            <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>
