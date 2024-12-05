@@ -88,10 +88,10 @@ class Preorder(models.Model):
                                                readonly=True)
     validation_admin_comment = fields.Text(string='Commentaire Admin', readonly=True)
 
-    @api.depends("partner_id.parent_id")
+    @api.depends("partner_id")
     def _compute_get_emailrh(self):
         email_user_main = self.partner_id.parent_id.child_ids.filtered(lambda p: p.role == 'main_user')[:1].email
-        return email_user_main if email_user_main else False
+        self.email_rh = email_user_main if email_user_main else self.email_rh = False
 
     def validate_rh(self):
 
